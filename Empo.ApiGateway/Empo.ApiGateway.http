@@ -1,0 +1,6 @@
+@Empo.ApiGateway_HostAddress = http://localhost:5026
+
+GET {{Empo.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
