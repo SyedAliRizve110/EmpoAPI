@@ -1,5 +1,7 @@
 ﻿
 using Empo.BuildingBlocks.Application;
+using Empo.BuildingBlocks.Domain.Interfaces;
+using Empo.BuildingBlocks.Infrastructure;
 using Empo.EmloyeeService.Api.Configuration;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
@@ -74,6 +76,9 @@ namespace Empo.EmloyeeService.Api
             //        };
             //    });
             services.AddAuthorization();
+
+            services.AddScoped<ITenantProvider, TenantProvider>();
+            services.AddScoped<IUserInfoProvider, UserInfoProvider>();
 
             // var assemblyName = this.GetAssemblyName();
             var assemblyName = typeof(EmployeeContext).Assembly.GetName().Name;
