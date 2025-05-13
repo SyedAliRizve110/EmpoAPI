@@ -1,10 +1,11 @@
-﻿
-using Empo.BuildingBlocks.Application;
+﻿using Empo.BuildingBlocks.Application;
 using Empo.BuildingBlocks.Domain.Interfaces;
 using Empo.BuildingBlocks.Infrastructure;
 using Empo.EmloyeeService.Api.Configuration;
+using Empo.EmloyeeService.Api.SeedWork;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
+using Hellang.Middleware.ProblemDetails;
 using Kingfisher.TourService.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,10 @@ namespace Empo.EmloyeeService.Api
             //        };
             //    });
             services.AddAuthorization();
+            services.AddProblemDetails(x =>
+            {
+                x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
+            });
 
             services.AddScoped<ITenantProvider, TenantProvider>();
             services.AddScoped<IUserInfoProvider, UserInfoProvider>();
