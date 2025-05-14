@@ -33,6 +33,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api-Gateway", "Api-Gateway"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empo.ApiGateway", "Empo.ApiGateway\Empo.ApiGateway.csproj", "{D3618AAC-3937-456C-AB56-2EBB0FAA0CB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empo.Shared.Model", "Empo.Shared.Model\Empo.Shared.Model.csproj", "{B35CE568-E47B-441C-BEB4-C5D22537512C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empo.Shared.Utility", "Empo.Shared.Utility\Empo.Shared.Utility.csproj", "{28068B2B-7461-4A97-A0B0-FC2100E9FBD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,14 @@ Global
 		{D3618AAC-3937-456C-AB56-2EBB0FAA0CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3618AAC-3937-456C-AB56-2EBB0FAA0CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3618AAC-3937-456C-AB56-2EBB0FAA0CB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35CE568-E47B-441C-BEB4-C5D22537512C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35CE568-E47B-441C-BEB4-C5D22537512C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35CE568-E47B-441C-BEB4-C5D22537512C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35CE568-E47B-441C-BEB4-C5D22537512C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28068B2B-7461-4A97-A0B0-FC2100E9FBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28068B2B-7461-4A97-A0B0-FC2100E9FBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28068B2B-7461-4A97-A0B0-FC2100E9FBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28068B2B-7461-4A97-A0B0-FC2100E9FBD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +97,8 @@ Global
 		{0F3B0231-A0CC-40B2-A79C-8252D55BCCE5} = {CB95F981-BF64-40A6-BAE7-A6B4B3908C0A}
 		{4E368AB7-05C1-4DD5-AE4F-A23F2988B549} = {CB95F981-BF64-40A6-BAE7-A6B4B3908C0A}
 		{D3618AAC-3937-456C-AB56-2EBB0FAA0CB0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B35CE568-E47B-441C-BEB4-C5D22537512C} = {A236AC19-E9DC-437D-89D2-55F2185FCB09}
+		{28068B2B-7461-4A97-A0B0-FC2100E9FBD6} = {A236AC19-E9DC-437D-89D2-55F2185FCB09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {306A2D3C-B1C6-45F9-89DA-A54AF1D2F89D}
