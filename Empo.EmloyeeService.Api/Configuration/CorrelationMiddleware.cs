@@ -7,7 +7,7 @@
 
         public CorrelationMiddleware(RequestDelegate next)
         {
-            _next = next;
+           this._next = next;
         }
 
         public async Task Invoke(

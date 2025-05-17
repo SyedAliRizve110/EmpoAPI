@@ -29,10 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Empo.EmployeeService.Application\Empo.EmployeeService.Application.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Infrastructure\Empo.EmployeeService.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MappingProfiles\" />
+    <ProjectReference Include="..\Empo.Shared.Utility\Empo.Shared.Utility.csproj" />
   </ItemGroup>
 
 </Project>
