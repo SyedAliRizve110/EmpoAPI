@@ -1,5 +1,6 @@
 ﻿using Empo.BuildingBlocks.Application;
 using Empo.BuildingBlocks.Domain.Interfaces;
+using Empo.BuildingBlocks.Domain.Rules;
 using Empo.BuildingBlocks.Infrastructure;
 using Empo.EmloyeeService.Api.Configuration;
 using Empo.EmloyeeService.Api.SeedWork;
@@ -50,6 +51,7 @@ namespace Empo.EmloyeeService.Api
             services.AddAutoMapper(typeof(EmployeeMapper));
 
             services.AddMemoryCache();
+            services.AddSwaggerDocumentation();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -77,9 +79,11 @@ namespace Empo.EmloyeeService.Api
             //        };
             //    });
             services.AddAuthorization();
+
             services.AddProblemDetails(x =>
             {
                 x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidatonExceptionProblemDetails(ex));
             });
 
             services.AddScoped<ITenantProvider, TenantProvider>();
@@ -117,16 +121,18 @@ namespace Empo.EmloyeeService.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.InitializeDataBase();
-            // app.UseDeveloperExceptionPage();
+            app.UseMiddleware<CorrelationMiddleware>();
+            //app.UseDeveloperExceptionPage();
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            //  app.UseSwaggerDocumentation();
+              app.UseSwaggerDocumentation();
         }
 
         private static ILogger ConfigureLogger()

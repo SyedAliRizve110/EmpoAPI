@@ -23,13 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Repositories\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Empo.BuildingBlocks.Infrastructure\Empo.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Domain\Empo.EmployeeService.Domain.csproj" />
+    <ProjectReference Include="..\Empo.Shared.Utility\Empo.Shared.Utility.csproj" />
   </ItemGroup>
 
 </Project>
