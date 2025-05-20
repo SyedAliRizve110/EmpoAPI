@@ -1,7 +1,7 @@
 using Empo.EmloyeeService.Api;
 using Microsoft.AspNetCore;
 
-namespace Kingfisher.TourService.Api;
+namespace Empo.EmloyeeService.Api;
 public class Program
 {
     public static void Main(string[] args)

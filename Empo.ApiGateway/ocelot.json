@@ -1,0 +1,11 @@
+{
+  "GlobalConfiguration": {
+    "DownstreamScheme": "http",
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "",
+      "Port": "8500",
+      "Type":  "Consul"
+    }
+  }
+  }

@@ -7,7 +7,6 @@ using Empo.EmloyeeService.Api.SeedWork;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
 using Hellang.Middleware.ProblemDetails;
-using Kingfisher.TourService.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -126,13 +125,13 @@ namespace Empo.EmloyeeService.Api
 
             app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
-            
+           // app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-              app.UseSwaggerDocumentation();
+            app.UseSwaggerDocumentation();
         }
 
         private static ILogger ConfigureLogger()
