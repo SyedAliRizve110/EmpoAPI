@@ -3,13 +3,13 @@ using Empo.BuildingBlocks.Domain.Rules;
 
 namespace Empo.BuildingBlocks.Domain.Base;
 
-public abstract class DomainBase :IDomainBase
+public abstract class DomainBase : IDomainBase
 {
     public virtual Guid Id { get; set; }
 
     protected DomainBase()
     {
-            
+
     }
     protected void CheckRule(IBusinessRule rule)
     {

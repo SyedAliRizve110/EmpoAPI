@@ -16,11 +16,11 @@ public class BiDictionary<TFirst, TSecond>
         _secondTOFIrst.Add(second, first);
     }
 
-    public bool TryGetFirst(TFirst first, out TSecond second)
+    public bool TryGetByFirst(TFirst first, out TSecond second)
     {
         return _firstToSecond.TryGetValue(first, out second);
     }
-    public bool TryGetSecond(TSecond second, out TFirst first)
+    public bool TryGetBySecond(TSecond second, out TFirst first)
     {
         return _secondTOFIrst.TryGetValue(second, out first);
     }

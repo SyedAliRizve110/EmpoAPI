@@ -11,11 +11,11 @@ public class InternalCommandMaper : IInternalCommandMapper
     }
     public string GetName(Type type)
     {
-        return _internalCommandMap.TryGetSecond(type, out var name) ? name : null;
+        return _internalCommandMap.TryGetBySecond(type, out var name) ? name : null;
     }
 
     public Type GetType(string name)
     {
-        return _internalCommandMap.TryGetFirst(name, out var type) ? type : null;
+        return _internalCommandMap.TryGetByFirst(name, out var type) ? type : null;
     }
 }

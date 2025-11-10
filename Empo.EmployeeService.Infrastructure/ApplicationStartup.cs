@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using Empo.BuildingBlocks.Application;
+using Empo.EmployeeService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,14 @@ public class ApplicationStartup
 
         container.Populate(services);
 
+        #region
+       // register modules
+
+        container.RegisterModule(new DataAccessModule(connectionString, builderServiceProvider));
+
+        #endregion
+
+
         container.RegisterInstance(executionContextAccessor);
 
         var buildContainer = container.Build();
@@ -60,7 +69,7 @@ public class ApplicationStartup
 
         var serviceProvider = new AutofacServiceProvider(buildContainer);
 
-        CompoitionRoot.SetContainer(buildContainer);
+      //  CompoitionRoot.SetContainer(buildContainer);
 
         return serviceProvider;
 
@@ -84,7 +93,7 @@ public class ApplicationStartup
 
          //   dbContextOptionBuilder.ReplaceService<IValueGeneratorSelector, Strong>
 
-            return new EmployeeContext(dbContextOptionBuilder.Options);
+            return new EmployeeContext(dbContextOptionBuilder.Options, default, default);
         }).AsSelf().InstancePerLifetimeScope();
         container.Build();
     }
