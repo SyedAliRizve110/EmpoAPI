@@ -150,4 +150,8 @@ public class EmployeeContext : DbContext
             method.Invoke(modelBuilder, new object[] { modelBuilder });
         }
     }
+    public void SetGlobalQuery<T>(ModelBuilder builder) where T : TenantEntityBase
+    {
+        builder.Entity<T>().HasQueryFilter(e => e.TenantId == _tenantProvider.GetTenantId());
+    }
 }
