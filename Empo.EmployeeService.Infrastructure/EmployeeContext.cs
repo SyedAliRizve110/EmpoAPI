@@ -1,7 +1,10 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Data;
+﻿using Empo.BuildingBlocks.Application.Outbox;
+using Empo.BuildingBlocks.Domain.Interfaces;
+using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Database;
+using Empo.EmployeeService.Infrastructure.Processing.InternalCommands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyModel;
@@ -12,19 +15,29 @@ namespace Empo.EmployeeService.Infrastructure;
 
 public class EmployeeContext : DbContext
 {
+    private ITenantProvider _tenantProvider;
+    private IUserInfoProvider _userInfoProvider;
+
     public DbSet<EmployeeEntity> Employee { get; set; }
     public DbSet<EmployeePhoneEntity> Phone { get; set; }
     public DbSet<EmployeeTimeSheetEntity> TimeSheet { get; set; }
     public DbSet<AddressEntity> Address { get; set; }
 
-    public EmployeeContext(DbContextOptions<EmployeeContext> options)
+    public DbSet<InternalCommand> InternalCommand { get; set; }
+    public DbSet<OutboxMessage> OutboxMessage { get; set; }
+
+    public EmployeeContext(DbContextOptions<EmployeeContext> options, IUserInfoProvider userInfoProvider, ITenantProvider tenantProvider)
     : base(options)
     {
+        this._tenantProvider = tenantProvider;
+        this._userInfoProvider = userInfoProvider;
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Application);
+
+        ApplyTenantFilter(modelBuilder);
 
         // modelBuilder.SeedDataBase();
     }
@@ -55,45 +68,49 @@ public class EmployeeContext : DbContext
 
             SetEntityBase(listTEntriesEntityBase);
         }
+        var listEntriesEntityBase = ChangeTracker.Entries<EntityBase>().ToList();
+        if (listEntriesEntityBase.Count() > 0)
+        {
+            SetEntityBase(listEntriesEntityBase);
+        }
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(message => Debug.WriteLine(message));
 
     public void SetTenantEntityBase(List<EntityEntry<TenantEntityBase>> list)
     {
-       // var tenantId = _tenantProvider.GetTenantId();
+        var tenantId = _tenantProvider.GetTenantId();
         foreach (var entry in list)
         {
             switch (entry.State)
             {
                 case EntityState.Added:
-                 //   entry.Entity.SetTenantId(tenantId);
+                    entry.Entity.SetTenantId(tenantId);
                     break;
                 case EntityState.Modified:
-                 //   entry.Entity.SetTenantId(tenantId);
+                    entry.Entity.SetTenantId(tenantId);
                     break;
             }
         }
     }
     public void SetEntityBase(List<EntityEntry<EntityBase>> list)
     {
-        // var userId = _userInfoProvider.
-        // var userId = _userInfoProvider.GetUserId();
+        var userId = _userInfoProvider.GetUserId();
         foreach (var entry in list)
         {
             switch (entry.State)
             {
                 case EntityState.Added:
-                    //  entry.Entity.SetDataRecorderMetadata(userId, true);
+                    entry.Entity.SetDataRecorderMetadata(userId, true);
                     break;
                 case EntityState.Modified:
                     entry.Property("DateCreated").IsModified = false;
                     entry.Property("CreatedBy").IsModified = false;
-                    //entry.Entity.SetDataRecorderMetadata(userId, false);
+                    entry.Entity.SetDataRecorderMetadata(userId, false);
                     break;
             }
         }
     }
-    private IList<Type> GetEntityTypes()
+    private IList<Type>  GetEntityTypes()
     {
         IList<Type> entityType;
         entityType = (from a in GetReferencingAssemblies()
@@ -121,5 +138,16 @@ public class EmployeeContext : DbContext
         }
         return assemblies;
     }
-}
+    public void ApplyTenantFilter(ModelBuilder modelBuilder)
+    {
+        MethodInfo SetGlobalQueryMethod = typeof(EmployeeContext)
+            .GetMethods()
+            .Single(t => t.Name == "SetGlobalQuery");
 
+        foreach (var type in GetEntityTypes())
+        {
+            var method = SetGlobalQueryMethod.MakeGenericMethod(type);
+            method.Invoke(modelBuilder, new object[] { modelBuilder });
+        }
+    }
+}

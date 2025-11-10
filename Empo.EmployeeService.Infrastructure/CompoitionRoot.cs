@@ -2,7 +2,7 @@
 
 namespace Empo.EmployeeService.Infrastructure;
 
-public static class CompoitionRoot
+public static class CompositionRoot
 {
     private static IContainer _container;
     public static void SetContainer(IContainer container)
