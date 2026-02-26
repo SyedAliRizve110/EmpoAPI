@@ -8,9 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MappingProfiles\**" />
+    <Content Remove="MappingProfiles\**" />
+    <EmbeddedResource Remove="MappingProfiles\**" />
+    <None Remove="MappingProfiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Consul" Version="1.7.14.7" />
-    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.13" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
@@ -26,12 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Empo.BuildingBlocks.Application\Empo.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Empo.BuildingBlocks.Domain\Empo.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Application\Empo.EmployeeService.Application.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Infrastructure\Empo.EmployeeService.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MappingProfiles\" />
   </ItemGroup>
 
 </Project>

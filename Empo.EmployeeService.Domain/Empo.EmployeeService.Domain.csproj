@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Empo.BuildingBlocks.Domain\Empo.BuildingBlocks.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
