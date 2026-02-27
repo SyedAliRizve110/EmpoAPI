@@ -26,7 +26,5 @@ public class CreateEmployeeRequest
 
     public Address PermanentAddress { get; set; }
     public Address TemporaryAddress { get; set; }
-
-    public ICollection<EmployeeTimeSheet> EmployeeTimeSheets { get; set; }
     public EmployeePhone Phone { get; set; }
 }

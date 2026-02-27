@@ -47,6 +47,8 @@ namespace Empo.EmloyeeService.Api
             services.AddAutoMapper(typeof(EmployeeMapper));
 
             services.AddMemoryCache();
+            services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -116,7 +118,8 @@ namespace Empo.EmloyeeService.Api
             {
                 endpoints.MapControllers();
             });
-            //  app.UseSwaggerDocumentation();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         private static ILogger ConfigureLogger()
