@@ -1,9 +1,8 @@
-﻿using global::Empo.BuildingBlocks.Infrastructure.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
+namespace Empo.EmployeeService.Application.CommonRequestModel;
 
-public class AddressEntity : EntityBase
+public class AddressModel
 {
     [MaxLength(256)]
     public string Address1 { get; set; }
@@ -23,10 +22,8 @@ public class AddressEntity : EntityBase
     [MaxLength(100)]
     public string Country { get; set; }
 
-    public AddressEntity()
-    {
+    //todo: set precission point
+    public decimal? Lat { get; set; }
 
-    }
+    public decimal? Lng { get; set; }
 }
-
-

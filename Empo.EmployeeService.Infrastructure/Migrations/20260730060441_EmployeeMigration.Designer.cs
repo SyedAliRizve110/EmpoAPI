@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Empo.EmployeeService.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20250511123434_EmployeeMigration")]
+    [Migration("20260730060441_EmployeeMigration")]
     partial class EmployeeMigration
     {
         /// <inheritdoc />
@@ -61,12 +61,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Property<DateTime>("DateModifieed")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("Lat")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("Lng")
-                        .HasColumnType("numeric");
-
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
@@ -74,9 +68,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
@@ -92,6 +83,9 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatedBy")
@@ -130,20 +124,9 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PermanentAddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TemporaryAddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PermanentAddressId");
-
-                    b.HasIndex("TemporaryAddressId");
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Employee", "employee");
                 });
@@ -171,11 +154,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Extension")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
@@ -183,9 +161,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -201,10 +176,10 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<TimeOnly>("ClockInTIme")
+                    b.Property<TimeOnly>("ClockInTime")
                         .HasColumnType("time without time zone");
 
-                    b.Property<TimeOnly>("ClockOutTIme")
+                    b.Property<TimeOnly>("ClockOutTime")
                         .HasColumnType("time without time zone");
 
                     b.Property<Guid>("CreatedBy")
@@ -225,9 +200,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -237,21 +209,13 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", b =>
                 {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity.AddressEntity", "PermanentAddress")
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity.AddressEntity", "Address")
                         .WithMany()
-                        .HasForeignKey("PermanentAddressId")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity.AddressEntity", "TemporaryAddress")
-                        .WithMany()
-                        .HasForeignKey("TemporaryAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PermanentAddress");
-
-                    b.Navigation("TemporaryAddress");
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeePhoneEntity", b =>

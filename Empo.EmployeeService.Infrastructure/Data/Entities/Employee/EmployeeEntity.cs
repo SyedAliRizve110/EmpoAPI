@@ -1,12 +1,12 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
-using Empo.EmployeeService.Domain.Employee.Enums;
+using Empo.EmployeeService.Application.Employees.Enums;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 
-public class EmployeeEntity : TenantEntityBase
+public class EmployeeEntity : EntityBase
 {
     [MaxLength(100)]
     public string FirstName { get; set; }
@@ -20,13 +20,9 @@ public class EmployeeEntity : TenantEntityBase
     public DateOnly DateOfBirth { get; set; }
     public bool IsActive { get; set; }
     public EmployeeRoleEnum EmployeeRole { get; set; }
-
-    public Guid PermanentAddressId { get; set; }
-    [ForeignKey(nameof(PermanentAddressId))]
-    public AddressEntity PermanentAddress { get; set; }
-    public Guid TemporaryAddressId { get; set; }
-    [ForeignKey(nameof(TemporaryAddressId))]
-    public AddressEntity TemporaryAddress { get; set; }
+    public Guid AddressId { get; set; }
+    [ForeignKey(nameof(AddressId))]
+    public AddressEntity Address { get; set; }
 
     public ICollection<EmployeeTimeSheetEntity> EmployeeTimeSheets { get; set; }
     public EmployeePhoneEntity Phone { get; set; }

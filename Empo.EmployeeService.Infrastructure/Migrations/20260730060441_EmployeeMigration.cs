@@ -26,13 +26,10 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     State = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     ZipCode = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
                     Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Lat = table.Column<decimal>(type: "numeric", nullable: true),
-                    Lng = table.Column<decimal>(type: "numeric", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,27 +48,18 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     EmployeeRole = table.Column<int>(type: "integer", nullable: false),
-                    PermanentAddressId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TemporaryAddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employee_Address_PermanentAddressId",
-                        column: x => x.PermanentAddressId,
-                        principalSchema: "employee",
-                        principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employee_Address_TemporaryAddressId",
-                        column: x => x.TemporaryAddressId,
+                        name: "FK_Employee_Address_AddressId",
+                        column: x => x.AddressId,
                         principalSchema: "employee",
                         principalTable: "Address",
                         principalColumn: "Id",
@@ -86,13 +74,11 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CountryCode = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
                     Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Extension = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,14 +99,13 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    ClockInTIme = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    ClockOutTIme = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    ClockInTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    ClockOutTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,16 +120,10 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_PermanentAddressId",
+                name: "IX_Employee_AddressId",
                 schema: "employee",
                 table: "Employee",
-                column: "PermanentAddressId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employee_TemporaryAddressId",
-                schema: "employee",
-                table: "Employee",
-                column: "TemporaryAddressId");
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phone_EmployeeId",

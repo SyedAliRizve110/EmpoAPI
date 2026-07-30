@@ -4,16 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 
-public class EmployeePhoneEntity : TenantEntityBase
+public class EmployeePhoneEntity : EntityBase
 {
     [MaxLength(3)]
     public string CountryCode { get; set; }
 
     [MaxLength(20)]
     public string Number { get; set; }
-
-    [MaxLength(20)]
-    public string Extension { get; set; }
 
     [ForeignKey("Employee")]
     public Guid EmployeeId { get; set; }

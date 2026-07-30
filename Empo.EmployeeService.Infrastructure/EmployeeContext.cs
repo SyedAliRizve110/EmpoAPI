@@ -31,49 +31,49 @@ public class EmployeeContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        SetChangesInternal();
+        //SetChangesInternal();
         var result = await base.SaveChangesAsync(cancellationToken);
         return result;
     }
 
     public override int SaveChanges()
     {
-        SetChangesInternal();
+       // SetChangesInternal();
         var result = base.SaveChanges();
         return result;
     }
 
-    private void SetChangesInternal()
-    {
-        var listEntriesTenantEntityBase = ChangeTracker.Entries<TenantEntityBase>().ToList();
-        if (listEntriesTenantEntityBase.Count > 0)
-        {
-            SetTenantEntityBase(listEntriesTenantEntityBase);
+    //private void SetChangesInternal()
+    //{
+    //    var listEntriesTenantEntityBase = ChangeTracker.Entries<TenantEntityBase>().ToList();
+    //    if (listEntriesTenantEntityBase.Count > 0)
+    //    {
+    //        SetTenantEntityBase(listEntriesTenantEntityBase);
 
-            var listTEntriesEntityBase = listEntriesTenantEntityBase.Select(
-                entry => Entry<EntityBase>(entry.Entity)).ToList();
+    //        var listTEntriesEntityBase = listEntriesTenantEntityBase.Select(
+    //            entry => Entry<EntityBase>(entry.Entity)).ToList();
 
-            SetEntityBase(listTEntriesEntityBase);
-        }
-    }
+    //        SetEntityBase(listTEntriesEntityBase);
+    //    }
+    //}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(message => Debug.WriteLine(message));
 
-    public void SetTenantEntityBase(List<EntityEntry<TenantEntityBase>> list)
-    {
-       // var tenantId = _tenantProvider.GetTenantId();
-        foreach (var entry in list)
-        {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                 //   entry.Entity.SetTenantId(tenantId);
-                    break;
-                case EntityState.Modified:
-                 //   entry.Entity.SetTenantId(tenantId);
-                    break;
-            }
-        }
-    }
+    //public void SetTenantEntityBase(List<EntityEntry<TenantEntityBase>> list)
+    //{
+    //   // var tenantId = _tenantProvider.GetTenantId();
+    //    foreach (var entry in list)
+    //    {
+    //        switch (entry.State)
+    //        {
+    //            case EntityState.Added:
+    //             //   entry.Entity.SetTenantId(tenantId);
+    //                break;
+    //            case EntityState.Modified:
+    //             //   entry.Entity.SetTenantId(tenantId);
+    //                break;
+    //        }
+    //    }
+    //}
     public void SetEntityBase(List<EntityEntry<EntityBase>> list)
     {
         // var userId = _userInfoProvider.
@@ -93,16 +93,16 @@ public class EmployeeContext : DbContext
             }
         }
     }
-    private IList<Type> GetEntityTypes()
-    {
-        IList<Type> entityType;
-        entityType = (from a in GetReferencingAssemblies()
-                      from t in a.DefinedTypes
-                      where t.BaseType == typeof(TenantEntityBase)
-                      select t.AsType()).ToList();
+    //private IList<Type> GetEntityTypes()
+    //{
+    //    IList<Type> entityType;
+    //    entityType = (from a in GetReferencingAssemblies()
+    //                  from t in a.DefinedTypes
+    //                  where t.BaseType == typeof(TenantEntityBase)
+    //                  select t.AsType()).ToList();
 
-        return entityType;
-    }
+    //    return entityType;
+    //}
 
     private IEnumerable<Assembly> GetReferencingAssemblies()
     {

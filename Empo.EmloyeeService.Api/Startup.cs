@@ -43,10 +43,12 @@ namespace Empo.EmloyeeService.Api
             services.AddControllers(options =>
             options.Filters.Add<HttpResponseAxceptionFilter>());
 
-            services.AddAutoMapper(typeof(Program));
-            services.AddAutoMapper(typeof(EmployeeMapper));
+            //services.AddAutoMapper(typeof(Program));
+            //services.AddAutoMapper(typeof(EmployeeMapper));
 
             services.AddMemoryCache();
+            services.AddSwaggerGen();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -87,6 +89,7 @@ namespace Empo.EmloyeeService.Api
                     });
             });
 
+
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();
 
@@ -116,7 +119,12 @@ namespace Empo.EmloyeeService.Api
             {
                 endpoints.MapControllers();
             });
-            //  app.UseSwaggerDocumentation();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                // The version string 'v1' here must match your AddSwaggerGen version exactly
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
         }
 
         private static ILogger ConfigureLogger()
