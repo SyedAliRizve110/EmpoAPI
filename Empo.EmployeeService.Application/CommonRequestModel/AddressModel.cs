@@ -22,8 +22,4 @@ public class AddressModel
     [MaxLength(100)]
     public string Country { get; set; }
 
-    //todo: set precission point
-    public decimal? Lat { get; set; }
-
-    public decimal? Lng { get; set; }
 }

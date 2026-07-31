@@ -6,15 +6,24 @@ namespace Empo.EmployeeService.Application.Employees.CreateEmployee;
 
 public class CreateEmployeeCommandHandler : ICommandHandler<CreateEmployeeCommand, EmployeeDto>
 {
-    public IEmployeeService _service {  get; }
-    public CreateEmployeeCommandHandler()
+    public IEmployeeService _service { get; }
+    public CreateEmployeeCommandHandler(IEmployeeService service)
     {
-            
+        _service = service;
     }
 
-    public Task<EmployeeDto> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
     {
         var request = command._request;
-        return _service.AddEmployee(request);
+        var isExist = await this._service.IsEmployeeEmailExistsAsync(request.Email);
+        if (!isExist)
+        {
+            var emp = await _service.AddEmployee(request);
+            return new EmployeeDto { Id = emp.Id };
+        }
+        else
+        {
+            throw new Exception("Employee with this email already exists.");
+        }
     }
 }

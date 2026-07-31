@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Empo.BuildingBlocks.Application;
 
 namespace Empo.EmloyeeService.Api.Configuration
 {
@@ -10,13 +9,13 @@ namespace Empo.EmloyeeService.Api.Configuration
         {
             try
             {
-                if (context.Exception!= null)
+                if (context.Exception != null)
                 {
                     throw context.Exception;
                 }
                 if (context.HttpContext.Request.Method.Equals("Get", StringComparison.CurrentCultureIgnoreCase) == false)
                 {
-                  //  IUnitOfWork 
+                    //  IUnitOfWork 
                 }
             }
             catch (Exception)

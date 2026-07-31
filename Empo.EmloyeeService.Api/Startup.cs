@@ -1,9 +1,9 @@
 ﻿
 using Empo.BuildingBlocks.Application;
 using Empo.EmloyeeService.Api.Configuration;
+using Empo.EmployeeService.Api;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
-using Kingfisher.TourService.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -42,9 +42,9 @@ namespace Empo.EmloyeeService.Api
             services.AddHttpContextAccessor();
             services.AddControllers(options =>
             options.Filters.Add<HttpResponseAxceptionFilter>());
-
-            //services.AddAutoMapper(typeof(Program));
-            //services.AddAutoMapper(typeof(EmployeeMapper));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            services.AddAutoMapper(config => { /* configuration */}, typeof(Program).Assembly);
+            services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
 
             services.AddMemoryCache();
             services.AddSwaggerGen();
@@ -119,6 +119,7 @@ namespace Empo.EmloyeeService.Api
             {
                 endpoints.MapControllers();
             });
+            app.UseCors();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

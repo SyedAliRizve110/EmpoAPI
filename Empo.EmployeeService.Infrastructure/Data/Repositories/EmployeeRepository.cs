@@ -28,4 +28,17 @@ public class EmployeeRepository : IEmployeeService
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<EmployeeDto>(employeeEntity);
     }
+
+    public async Task<bool> IsEmployeeEmailExistsAsync(string email)
+    {
+        var employeeEntity = await _dbSet.FirstOrDefaultAsync(e => e.Email == email);
+        if (employeeEntity == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }
