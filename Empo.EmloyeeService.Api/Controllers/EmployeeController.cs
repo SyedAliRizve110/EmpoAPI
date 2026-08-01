@@ -22,7 +22,7 @@ public class EmployeeController : Controller
     [Route("")]
     [HttpPost]
     [ProducesResponseType(typeof(EmployeeDto), (int)HttpStatusCode.Created)]
-    public async Task<IActionResult> CreateEmployee([FromBody] EmployeeModel request)
+    public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeRequestModel request)
     {
         var dto = await _mediator.Send(CreateEmployeeCommand.Create(request));
         return Ok(dto);

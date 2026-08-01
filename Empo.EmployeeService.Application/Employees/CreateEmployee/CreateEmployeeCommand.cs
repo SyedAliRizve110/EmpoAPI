@@ -6,9 +6,9 @@ namespace Empo.EmployeeService.Application.Employees.CreateEmployee;
 
 public class CreateEmployeeCommand : CommandBase<EmployeeDto>
 {
-    public EmployeeModel _request { get; set; }
+    public CreateEmployeeRequestModel _request { get; set; }
 
-    public static CreateEmployeeCommand Create(EmployeeModel request)
+    public static CreateEmployeeCommand Create(CreateEmployeeRequestModel request)
     {
         return new CreateEmployeeCommand
         {

@@ -5,6 +5,7 @@ namespace Empo.EmployeeService.Application.Employees.EmployeesModel;
 
 public class EmployeePhoneModel
 {
+    public Guid Id { get; set; }
     [MaxLength(3)]
     public string CountryCode { get; set; }
 

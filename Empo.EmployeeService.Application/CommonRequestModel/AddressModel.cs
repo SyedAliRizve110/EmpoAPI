@@ -4,6 +4,7 @@ namespace Empo.EmployeeService.Application.CommonRequestModel;
 
 public class AddressModel
 {
+    public Guid Id { get; set; }
     [MaxLength(256)]
     public string Address1 { get; set; }
 

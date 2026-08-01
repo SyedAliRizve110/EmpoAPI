@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
 using Empo.EmployeeService.Application.Employees.EmployeService;
-using Empo.EmployeeService.Application.Models;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,14 +21,23 @@ public class EmployeeRepository : IEmployeeService
         _mapper = mapper;
     }
 
-    public async Task<Guid> AddEmployee(EmployeeModel request)
+    public async Task<Guid> AddEmployee(CreateEmployeeRequestModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
+        await SetAdditionalData(employeeEntity);
         await _dbSet.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
     }
 
+    public async Task<Guid> UpdateEmployee(EmployeeModel request)
+    {
+        var employeeEntity = _mapper.Map<EmployeeEntity>(request);
+        await SetAdditionalData(employeeEntity);
+        _dbSet.Update(employeeEntity);
+        await _dbContext.SaveChangesAsync();
+        return employeeEntity.Id;
+    }
     public async Task<bool> IsEmployeeEmailExistsAsync(string email)
     {
         var employeeEntity = await _dbSet.FirstOrDefaultAsync(e => e.Email == email);
@@ -40,5 +49,13 @@ public class EmployeeRepository : IEmployeeService
         {
             return true;
         }
+    }
+
+    public async Task<EmployeeEntity> SetAdditionalData(EmployeeEntity entity)
+    {
+        entity.IsActive = true;
+        entity.DateCreated = DateTime.Now;
+
+        return entity;
     }
 }
