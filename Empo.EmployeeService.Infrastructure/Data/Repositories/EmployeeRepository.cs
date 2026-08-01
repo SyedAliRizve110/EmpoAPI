@@ -21,12 +21,12 @@ public class EmployeeRepository : IEmployeeService
         _mapper = mapper;
     }
 
-    public async Task<EmployeeDto> AddEmployee(EmployeeModel request)
+    public async Task<Guid> AddEmployee(EmployeeModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
         await _dbSet.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
-        return _mapper.Map<EmployeeDto>(employeeEntity);
+        return employeeEntity.Id;
     }
 
     public async Task<bool> IsEmployeeEmailExistsAsync(string email)

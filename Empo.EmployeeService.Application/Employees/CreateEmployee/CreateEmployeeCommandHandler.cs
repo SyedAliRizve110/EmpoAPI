@@ -1,6 +1,7 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
 using Empo.EmployeeService.Application.Employees.EmployeService;
 using Empo.EmployeeService.Application.Models;
+using MediatR;
 
 namespace Empo.EmployeeService.Application.Employees.CreateEmployee;
 
@@ -19,7 +20,7 @@ public class CreateEmployeeCommandHandler : ICommandHandler<CreateEmployeeComman
         if (!isExist)
         {
             var emp = await _service.AddEmployee(request);
-            return new EmployeeDto { Id = emp.Id };
+            return new EmployeeDto { Id = emp };
         }
         else
         {

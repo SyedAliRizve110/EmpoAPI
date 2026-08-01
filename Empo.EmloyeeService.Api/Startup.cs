@@ -1,9 +1,9 @@
-﻿
-using Empo.BuildingBlocks.Application;
-using Empo.EmloyeeService.Api.Configuration;
-using Empo.EmployeeService.Api;
+﻿using Empo.EmployeeService.Api;
+using Empo.EmployeeService.Application.Employees.CreateEmployee;
+using Empo.EmployeeService.Application.Employees.EmployeService;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
+using Empo.EmployeeService.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -37,15 +37,16 @@ namespace Empo.EmloyeeService.Api
                 .Build();
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.AddControllers(options =>
-            options.Filters.Add<HttpResponseAxceptionFilter>());
+            //services.AddControllers(options =>
+            // options.Filters.Add<HttpResponseAxceptionFilter>());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateEmployeeCommandHandler).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
             services.AddAutoMapper(config => { /* configuration */}, typeof(Program).Assembly);
             services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
-
+            services.AddControllers();
             services.AddMemoryCache();
             services.AddSwaggerGen();
 
@@ -89,22 +90,24 @@ namespace Empo.EmloyeeService.Api
                     });
             });
 
+            services.AddScoped<IEmployeeService, EmployeeRepository>();
+
 
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();
 
-            IExecutionContextAccessor executionContextAcessor = new ExecutionContextAccessor(serviceProvider.GetService<HttpContextAccessor>());
+           // IExecutionContextAccessor executionContextAcessor = new ExecutionContextAccessor(serviceProvider.GetService<HttpContextAccessor>());
 
-            return ApplicationStartup.Initialize(
-                services,
-                this.GetConnectionString(),
-                //  cacheStore,
-                serviceProvider,
-                //  emailSender,
-                // emailsSettings,
-                _logger,
-                 executionContextAcessor
-            );
+            //return ApplicationStartup.Initialize(
+            //    services,
+            //    this.GetConnectionString(),
+            //    //  cacheStore,
+            //    serviceProvider,
+            //    //  emailSender,
+            //    // emailsSettings,
+            //    _logger,
+            //     executionContextAcessor
+            //);
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
