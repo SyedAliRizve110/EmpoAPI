@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Empo.BuildingBlocks.Infrastructure.Data;
+using Empo.EmployeeService.Application.CommonRequestModel;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
-using Empo.EmployeeService.Application.Employees.EmployeService;
+using Empo.EmployeeService.Application.Employees.GetEmployeeList;
+using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +27,8 @@ public class EmployeeRepository : IEmployeeService
     public async Task<Guid> AddEmployee(CreateEmployeeRequestModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
-        await SetAdditionalData(employeeEntity);
+        bool isNew = true;
+        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
         await _dbSet.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
@@ -33,7 +37,8 @@ public class EmployeeRepository : IEmployeeService
     public async Task<Guid> UpdateEmployee(EmployeeModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
-        await SetAdditionalData(employeeEntity);
+        bool isNew = false;
+        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
         _dbSet.Update(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
@@ -51,11 +56,67 @@ public class EmployeeRepository : IEmployeeService
         }
     }
 
-    public async Task<EmployeeEntity> SetAdditionalData(EmployeeEntity entity)
+    public async Task<EmployeeModel> GetEmployeeDetails(Guid employeeId)
+    {
+        var employeeEntity =  _dbSet.AsNoTracking().Where(e => e.Id == employeeId).Include(x => x.Phone).Include(x => x.Address).FirstOrDefault();
+        if (employeeEntity == null)
+        {
+            throw new Exception("Employee not found.");
+        }
+        var employeeModel = _mapper.Map<EmployeeModel>(employeeEntity);
+        return employeeModel;
+    }
+
+    public async Task<EmployeeEntity> ActivateEmployee(EmployeeEntity entity)
     {
         entity.IsActive = true;
-        entity.DateCreated = DateTime.Now;
-
         return entity;
+    }
+
+    public async Task<GetEmployeeListResponse> EmployeeListAsync(GetEmployeeListRequest request)
+    {
+        string likeSearch = $"%{request.search}%";
+        var query = (from v in _dbContext.Employee
+                    join vp in _dbContext.Phone on v.Id equals vp.EmployeeId into vvp
+                    from vp in vvp.DefaultIfEmpty()
+                    where (
+                    EF.Functions.Like(v.FirstName, likeSearch)
+                    || EF.Functions.Like(v.LastName, likeSearch)
+                    || EF.Functions.Like(v.Email, likeSearch)
+                    || EF.Functions.Like(vp.Number, likeSearch)
+                    )
+                    select new EmployeeModel
+                    {
+                        Id = v.Id,
+                        FirstName = v.FirstName,
+                        LastName = v.LastName,
+                        Email = v.Email,
+                        DateOfBirth = v.DateOfBirth,
+                        IsActive = v.IsActive,
+                        EmployeeRole = v.EmployeeRole,
+                        AddressId = v.AddressId,
+                        Address = new AddressModel
+                        {
+                            Id = v.Address.Id,
+                            Address1 = v.Address.Address1,
+                            Address2 = v.Address.Address2,
+                            City = v.Address.City,
+                            State = v.Address.State,
+                            ZipCode = v.Address.ZipCode,
+                            Country = v.Address.Country
+                        },
+                        Phone = new EmployeePhoneModel
+                        {
+                            Id = vp.Id,
+                            CountryCode = vp.CountryCode,
+                            Number = vp.Number
+                        }
+                    }).ToListAsync();
+        var employeeList = new GetEmployeeListResponse
+        {
+            Collecion = await query,
+            TotalRecords = query.Result.Count()
+        };
+        return employeeList;
     }
 }
