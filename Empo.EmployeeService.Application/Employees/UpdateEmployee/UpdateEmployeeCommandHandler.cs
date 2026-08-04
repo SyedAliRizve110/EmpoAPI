@@ -14,15 +14,15 @@ public class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmployeeComman
     public async Task<EmployeeDto> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
     {
         var request = command._request;
-        //var emp = await this._service.GetEmployeeDetails(request.Id);
-        //if (emp!= null)
-        //{
-            var emp = await _service.UpdateEmployee(request);
-            return new EmployeeDto { Id = emp };
-        //}
-        //else
-        //{
-        //   throw new Exception("Employee with this email does not exists.");
-        //}
+        var emp = await this._service.GetEmployeeDetails(request.Id);
+        if (emp.Id == request.Id)
+        {
+            var _emp = await _service.UpdateEmployee(request);
+            return new EmployeeDto { Id = _emp };
+        }
+        else
+        {
+           throw new Exception("Employee with this email does not exists.");
+        }
     }
 }

@@ -37,6 +37,7 @@ public class EmployeeRepository : IEmployeeService
     public async Task<Guid> UpdateEmployee(EmployeeModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
+        employeeEntity.EmployeeTimeSheets = null;
         bool isNew = false;
         employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
         _dbSet.Update(employeeEntity);
