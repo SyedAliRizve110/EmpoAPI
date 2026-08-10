@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Empo.EmployeeService.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20260730060441_EmployeeMigration")]
+    [Migration("20260806111110_EmployeeMigration")]
     partial class EmployeeMigration
     {
         /// <inheritdoc />
@@ -77,6 +77,61 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Address", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeAttendanceEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ClockInDevice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClockInIP")
+                        .HasColumnType("text");
+
+                    b.Property<TimeOnly>("ClockInTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<string>("ClockOutDevice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClockOutIP")
+                        .HasColumnType("text");
+
+                    b.Property<TimeOnly>("ClockOutTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WorkedMinutes")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Attendence", "employee");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", b =>
@@ -170,41 +225,15 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.ToTable("Phone", "employee");
                 });
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeTimeSheetEntity", b =>
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeAttendanceEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
+                        .WithMany("Attendance")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<TimeOnly>("ClockInTime")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<TimeOnly>("ClockOutTime")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("TimeSheet", "employee");
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", b =>
@@ -229,20 +258,9 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeTimeSheetEntity", b =>
-                {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
-                        .WithMany("EmployeeTimeSheets")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", b =>
                 {
-                    b.Navigation("EmployeeTimeSheets");
+                    b.Navigation("Attendance");
 
                     b.Navigation("Phone")
                         .IsRequired();

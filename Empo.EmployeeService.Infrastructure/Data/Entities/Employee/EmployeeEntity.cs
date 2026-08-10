@@ -1,5 +1,5 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
-using Empo.EmployeeService.Application.Employees.Enums;
+using Empo.EmployeeService.Application.Enums;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,6 +24,6 @@ public class EmployeeEntity : EntityBase
     [ForeignKey(nameof(AddressId))]
     public AddressEntity Address { get; set; }
 
-    public ICollection<EmployeeTimeSheetEntity> EmployeeTimeSheets { get; set; }
+    public ICollection<EmployeeAttendanceEntity> Attendance { get; set; }
     public EmployeePhoneEntity Phone { get; set; }
 }

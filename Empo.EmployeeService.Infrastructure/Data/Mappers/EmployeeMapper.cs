@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Empo.EmployeeService.Application.Attendence;
 using Empo.EmployeeService.Application.CommonRequestModel;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
@@ -13,7 +14,7 @@ namespace Empo.EmployeeService.Infrastructure.Data.Mappers
         {
             CreateMap<EmployeeModel, EmployeeEntity>().ReverseMap();
             CreateMap<EmployeePhoneModel, EmployeePhoneEntity>().ReverseMap();
-            CreateMap<EmployeeTimeSheetModel, EmployeeTimeSheetEntity>().ReverseMap();
+            CreateMap<EmployeeAttendanceModel, EmployeeAttendanceEntity>().ReverseMap();
             CreateMap<AddressModel, AddressEntity>().ReverseMap();
 
             CreateMap<CreateEmployeeRequestModel, EmployeeEntity>().ReverseMap();

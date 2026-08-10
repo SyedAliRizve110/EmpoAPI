@@ -1,4 +1,4 @@
-﻿namespace Empo.EmployeeService.Application.Employees.Enums;
+﻿namespace Empo.EmployeeService.Application.Enums;
 
 public enum EmployeeRoleEnum
 {

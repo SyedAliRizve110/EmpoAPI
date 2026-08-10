@@ -1,5 +1,5 @@
 ﻿using Empo.EmployeeService.Application.CommonRequestModel;
-using Empo.EmployeeService.Application.Employees.Enums;
+using Empo.EmployeeService.Application.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Empo.EmployeeService.Application.Employees.EmployeesModel;
@@ -21,6 +21,6 @@ public class EmployeeModel
     public EmployeeRoleEnum EmployeeRole { get; set; }
     public Guid AddressId { get; set; }
     public AddressModel Address { get; set; }
-    public ICollection<EmployeeTimeSheetModel> EmployeeTimeSheets { get; set; }
+   // public ICollection<EmployeeAttendanceModel> EmployeeAttendance { get; set; }
     public EmployeePhoneModel Phone { get; set; }
 }

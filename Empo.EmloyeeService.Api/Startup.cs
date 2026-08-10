@@ -1,4 +1,6 @@
-﻿using Empo.EmployeeService.Api;
+﻿using Autofac.Core;
+using Empo.EmployeeService.Api;
+using Empo.EmployeeService.Application.Attendence.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Infrastructure;
@@ -42,7 +44,7 @@ namespace Empo.EmloyeeService.Api
             services.AddHttpContextAccessor();
             //services.AddControllers(options =>
             // options.Filters.Add<HttpResponseAxceptionFilter>());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateEmployeeCommandHandler).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Empo.EmployeeService.Application.AssemblyReference).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
             services.AddAutoMapper(config => { /* configuration */}, typeof(Program).Assembly);
             services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
@@ -91,6 +93,7 @@ namespace Empo.EmloyeeService.Api
             });
 
             services.AddScoped<IEmployeeService, EmployeeRepository>();
+            services.AddScoped<IAttendanceService, AttendanceRepository>();
 
 
             services.AddHttpContextAccessor();

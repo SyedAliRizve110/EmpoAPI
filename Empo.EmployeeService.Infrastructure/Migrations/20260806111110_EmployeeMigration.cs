@@ -67,6 +67,39 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Attendence",
+                schema: "employee",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    ClockInTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    ClockOutTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    WorkedMinutes = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    ClockInIP = table.Column<string>(type: "text", nullable: true),
+                    ClockOutIP = table.Column<string>(type: "text", nullable: true),
+                    ClockInDevice = table.Column<string>(type: "text", nullable: true),
+                    ClockOutDevice = table.Column<string>(type: "text", nullable: true),
+                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendence", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attendence_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalSchema: "employee",
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Phone",
                 schema: "employee",
                 columns: table => new
@@ -92,32 +125,11 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "TimeSheet",
+            migrationBuilder.CreateIndex(
+                name: "IX_Attendence_EmployeeId",
                 schema: "employee",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    ClockInTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    ClockOutTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DateModifieed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimeSheet", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TimeSheet_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalSchema: "employee",
-                        principalTable: "Employee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                table: "Attendence",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_AddressId",
@@ -131,23 +143,17 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                 table: "Phone",
                 column: "EmployeeId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSheet_EmployeeId",
-                schema: "employee",
-                table: "TimeSheet",
-                column: "EmployeeId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Phone",
+                name: "Attendence",
                 schema: "employee");
 
             migrationBuilder.DropTable(
-                name: "TimeSheet",
+                name: "Phone",
                 schema: "employee");
 
             migrationBuilder.DropTable(

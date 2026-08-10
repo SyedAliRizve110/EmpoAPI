@@ -1,6 +1,4 @@
-﻿using Empo.EmployeeService.Application.CommonRequestModel;
-using Empo.EmployeeService.Application.Employees.EmployeesModel;
-using Empo.EmployeeService.Application.Employees.Enums;
+﻿using Empo.EmployeeService.Application.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Empo.EmployeeService.Application.Employees.CreateEmployee;

@@ -14,7 +14,7 @@ public class EmployeeContext : DbContext
 {
     public DbSet<EmployeeEntity> Employee { get; set; }
     public DbSet<EmployeePhoneEntity> Phone { get; set; }
-    public DbSet<EmployeeTimeSheetEntity> TimeSheet { get; set; }
+    public DbSet<EmployeeAttendanceEntity> Attendence { get; set; }
     public DbSet<AddressEntity> Address { get; set; }
 
     public EmployeeContext(DbContextOptions<EmployeeContext> options)
