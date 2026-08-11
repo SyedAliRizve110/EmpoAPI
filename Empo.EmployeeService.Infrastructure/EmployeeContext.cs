@@ -1,5 +1,6 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ public class EmployeeContext : DbContext
     public DbSet<EmployeePhoneEntity> Phone { get; set; }
     public DbSet<EmployeeAttendanceEntity> Attendence { get; set; }
     public DbSet<AddressEntity> Address { get; set; }
+    public DbSet<DepartmentEntity> Department { get; set; }
 
     public EmployeeContext(DbContextOptions<EmployeeContext> options)
     : base(options)

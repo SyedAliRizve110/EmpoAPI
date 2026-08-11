@@ -1,7 +1,6 @@
-﻿using Autofac.Core;
-using Empo.EmployeeService.Api;
+﻿using Empo.EmployeeService.Api;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
-using Empo.EmployeeService.Application.Employees.CreateEmployee;
+using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
@@ -94,7 +93,7 @@ namespace Empo.EmloyeeService.Api
 
             services.AddScoped<IEmployeeService, EmployeeRepository>();
             services.AddScoped<IAttendanceService, AttendanceRepository>();
-
+            services.AddScoped<IDepartmentService, DepartmentRepository>();
 
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();

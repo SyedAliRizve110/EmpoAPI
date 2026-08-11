@@ -14,7 +14,6 @@ public class EmployeeRepository : IEmployeeService
 {
     private DbSet<EmployeeEntity> _dbSet;
     protected EmployeeContext _dbContext { get; set; }
-
     private IMapper _mapper { get; }
 
     public EmployeeRepository(EmployeeContext dbContext, IMapper mapper)
@@ -36,11 +35,11 @@ public class EmployeeRepository : IEmployeeService
 
     public async Task<Guid> UpdateEmployee(EmployeeModel request)
     {
-        var employeeEntity = _mapper.Map<EmployeeEntity>(request);
-        employeeEntity.Attendance = null;
-        bool isNew = false;
-        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
-        _dbSet.Update(employeeEntity);
+        var employeeEntity = await _dbContext.Employee.FirstOrDefaultAsync(e => e.Id == request.Id);
+        var _request = _mapper.Map<EmployeeEntity>(request);
+        _request.Attendance = null;
+        var updatedEntity = await UpdateMetaData(employeeEntity, _request);
+        _dbSet.Update(updatedEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
     }
@@ -121,4 +120,12 @@ public class EmployeeRepository : IEmployeeService
         return employeeList;
     }
 
+    public async Task<EmployeeEntity> UpdateMetaData(EmployeeEntity employeeEntity, EmployeeEntity request)
+    {
+        request.CreatedBy = employeeEntity.CreatedBy;
+        request.DateCreated = employeeEntity.DateCreated;
+        bool isNew = false;
+        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        return request;
+    }
 }

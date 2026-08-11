@@ -1,6 +1,7 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Enums;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,4 +27,8 @@ public class EmployeeEntity : EntityBase
 
     public ICollection<EmployeeAttendanceEntity> Attendance { get; set; }
     public EmployeePhoneEntity Phone { get; set; }
+
+    [ForeignKey(nameof(DepartmentId))]
+    public Guid? DepartmentId { get; set; }
+    public DepartmentEntity Department { get; set; }
 }
