@@ -2,6 +2,7 @@
 using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Department;
 using Empo.EmployeeService.Application.Department.AddDepartmentEmployee;
+using Empo.EmployeeService.Application.Department.AssignManager;
 using Empo.EmployeeService.Application.Department.CreateDepartment;
 using Empo.EmployeeService.Application.Department.DepartmentEmployeesList;
 using Empo.EmployeeService.Application.Department.GetDepartmentDetails;
@@ -130,5 +131,14 @@ public class DepartmentRepository : IDepartmentService
         }
         _dbContext.SaveChanges();
         return Task.FromResult(departmentEntity.Id);
+    }
+
+    public async Task<Guid> AssignManagerAsync(AssignManagerRequest request)
+    {
+        var department = _dbContext.Department.Where(x => x.Id == request.DepartmentId).FirstOrDefault();
+        department.ManagerId = request.ManagerId;
+        _dbContext.Department.Update(department);
+        await _dbContext.SaveChangesAsync();
+        return department.Id;
     }
 }

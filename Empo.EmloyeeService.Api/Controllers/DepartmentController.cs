@@ -1,4 +1,5 @@
 ﻿using Empo.EmployeeService.Application.Department.AddDepartmentEmployee;
+using Empo.EmployeeService.Application.Department.AssignManager;
 using Empo.EmployeeService.Application.Department.CreateDepartment;
 using Empo.EmployeeService.Application.Department.DepartmentEmployeesList;
 using Empo.EmployeeService.Application.Department.GetDepartmentDetails;
@@ -79,6 +80,15 @@ public class DepartmentController : Controller
     public async Task<IActionResult> AddDepartmentEmployee([FromBody] AddDepartmentEmployeeRequest request)
     {
         var dto = await _mediator.Send(AddDepartmentEmployeeCommand.Add(request));
+        return Ok(dto);
+    }
+
+    [Route("assignmanager")]
+    [HttpPost]
+    [ProducesResponseType(typeof(DepartmentDto), (int)HttpStatusCode.Created)]
+    public async Task<IActionResult> AssignManager([FromBody] AssignManagerRequest request)
+    {
+        var dto = await _mediator.Send(AssignManagerCommand.Create(request));
         return Ok(dto);
     }
 }

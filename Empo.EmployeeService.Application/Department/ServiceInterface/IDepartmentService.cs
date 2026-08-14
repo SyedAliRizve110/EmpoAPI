@@ -1,4 +1,5 @@
 ﻿using Empo.EmployeeService.Application.Department.AddDepartmentEmployee;
+using Empo.EmployeeService.Application.Department.AssignManager;
 using Empo.EmployeeService.Application.Department.CreateDepartment;
 using Empo.EmployeeService.Application.Department.DepartmentEmployeesList;
 using Empo.EmployeeService.Application.Department.GetDepartmentDetails;
@@ -15,4 +16,5 @@ public interface IDepartmentService
     Task<GetDepartmentListResponse> DepartmentListAsync(GetDepartmentListRequest request);
     Task<DepartmentEmployeeListResponse> DepartmentEmployeeListAsync(DepartmentEmployeeListRequest request);
     Task<Guid> AddDepartmentEmployeeAsync(AddDepartmentEmployeeRequest request);
+    Task<Guid> AssignManagerAsync(AssignManagerRequest request);
 }
