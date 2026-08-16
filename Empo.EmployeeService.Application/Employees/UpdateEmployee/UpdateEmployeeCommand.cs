@@ -1,5 +1,4 @@
 ﻿using Empo.BuildingBlocks.Application.Contracts;
-using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
 using Empo.EmployeeService.Application.Models;
 

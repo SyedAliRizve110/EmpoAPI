@@ -1,6 +1,7 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ public class EmployeeContext : DbContext
     public DbSet<EmployeeAttendanceEntity> Attendence { get; set; }
     public DbSet<AddressEntity> Address { get; set; }
     public DbSet<DepartmentEntity> Department { get; set; }
-
+    public DbSet<DesignationEntity> Designation { get; set; }
     public EmployeeContext(DbContextOptions<EmployeeContext> options)
     : base(options)
     {

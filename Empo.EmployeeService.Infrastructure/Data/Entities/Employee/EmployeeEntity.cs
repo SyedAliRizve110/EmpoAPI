@@ -2,6 +2,7 @@
 using Empo.EmployeeService.Application.Enums;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,4 +32,8 @@ public class EmployeeEntity : EntityBase
     [ForeignKey(nameof(DepartmentId))]
     public Guid? DepartmentId { get; set; }
     public DepartmentEntity Department { get; set; }
+
+    [ForeignKey(nameof(DesignationId))]
+    public Guid? DesignationId { get; set; }
+    public DesignationEntity Designation { get; set; }    
 }
