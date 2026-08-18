@@ -1,5 +1,6 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Enums;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
@@ -35,5 +36,9 @@ public class EmployeeEntity : EntityBase
 
     [ForeignKey(nameof(DesignationId))]
     public Guid? DesignationId { get; set; }
-    public DesignationEntity Designation { get; set; }    
+    public DesignationEntity Designation { get; set; }
+
+    [ForeignKey(nameof(BranchId))]
+    public Guid? BranchId { get; set; }
+    public BranchEntity Branch { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
@@ -20,6 +21,7 @@ public class EmployeeContext : DbContext
     public DbSet<AddressEntity> Address { get; set; }
     public DbSet<DepartmentEntity> Department { get; set; }
     public DbSet<DesignationEntity> Designation { get; set; }
+    public DbSet<BranchEntity> Branch { get; set; }
     public EmployeeContext(DbContextOptions<EmployeeContext> options)
     : base(options)
     {

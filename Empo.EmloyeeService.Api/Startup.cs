@@ -1,5 +1,6 @@
 ﻿using Empo.EmployeeService.Api;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
+using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
@@ -96,6 +97,7 @@ namespace Empo.EmloyeeService.Api
             services.AddScoped<IAttendanceService, AttendanceRepository>();
             services.AddScoped<IDepartmentService, DepartmentRepository>();
             services.AddScoped<IDesignationService, DesignationRepository>();
+            services.AddScoped<IBranchService, BranchRepository>();
 
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();

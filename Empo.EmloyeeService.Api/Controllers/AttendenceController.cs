@@ -2,7 +2,6 @@
 using Empo.EmployeeService.Application.Attendence.AttendenceList;
 using Empo.EmployeeService.Application.Attendence.ClockIn;
 using Empo.EmployeeService.Application.Attendence.ClockOut;
-using Empo.EmployeeService.Application.Employees.GetEmployeeList;
 using Empo.EmployeeService.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

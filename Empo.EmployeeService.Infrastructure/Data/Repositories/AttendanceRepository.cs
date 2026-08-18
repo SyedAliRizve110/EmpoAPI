@@ -5,9 +5,6 @@ using Empo.EmployeeService.Application.Attendence;
 using Empo.EmployeeService.Application.Attendence.ActiveEmployeesList;
 using Empo.EmployeeService.Application.Attendence.AttendenceList;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
-using Empo.EmployeeService.Application.CommonRequestModel;
-using Empo.EmployeeService.Application.Employees.EmployeesModel;
-using Empo.EmployeeService.Application.Employees.GetEmployeeList;
 using Empo.EmployeeService.Application.Enums;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Microsoft.EntityFrameworkCore;
@@ -96,21 +93,21 @@ public class AttendanceRepository : IAttendanceService
     {
         string likeSearch = $"%{request.search}%";
         var query = (from e in _dbContext.Attendence
-                    join ea in _dbContext.Employee on e.EmployeeId equals ea.Id into eea
-                    where (
-                 EF.Functions.Like(e.Employee.FirstName, likeSearch)
-                 || EF.Functions.Like(e.Employee.LastName, likeSearch)
-                 || EF.Functions.Like(e.Employee.Email, likeSearch)
-                 || EF.Functions.Like(e.Employee.Phone.Number, likeSearch)
-                 )
-                    where (
-                    e.Status == AttendanceSessionStatus.Active && e.Employee.IsActive == true)
-                    select new ActiveListUserModel
-                    {
-                        Name = e.Employee.FirstName + " " + e.Employee.LastName,
-                        EmployeeId = e.EmployeeId,
-                        Status = e.Status
-                    }).AsNoTracking().ToListAsync();
+                     join ea in _dbContext.Employee on e.EmployeeId equals ea.Id into eea
+                     where (
+                  EF.Functions.Like(e.Employee.FirstName, likeSearch)
+                  || EF.Functions.Like(e.Employee.LastName, likeSearch)
+                  || EF.Functions.Like(e.Employee.Email, likeSearch)
+                  || EF.Functions.Like(e.Employee.Phone.Number, likeSearch)
+                  )
+                     where (
+                     e.Status == AttendanceSessionStatus.Active && e.Employee.IsActive == true)
+                     select new ActiveListUserModel
+                     {
+                         Name = e.Employee.FirstName + " " + e.Employee.LastName,
+                         EmployeeId = e.EmployeeId,
+                         Status = e.Status
+                     }).AsNoTracking().ToListAsync();
         var employeeList = new ActiveEmployeeListResponse
         {
             Collecion = query.Result,

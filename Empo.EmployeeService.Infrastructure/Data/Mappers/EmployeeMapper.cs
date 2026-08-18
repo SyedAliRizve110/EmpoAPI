@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Empo.EmployeeService.Application.Attendence;
+using Empo.EmployeeService.Application.Branch;
+using Empo.EmployeeService.Application.Branch.CreateBranch;
 using Empo.EmployeeService.Application.CommonRequestModel;
 using Empo.EmployeeService.Application.Department;
 using Empo.EmployeeService.Application.Department.CreateDepartment;
@@ -10,6 +12,7 @@ using Empo.EmployeeService.Application.Designations.CreateDesignation;
 using Empo.EmployeeService.Application.Designations.UpdateDesignation;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
@@ -45,6 +48,13 @@ public class EmployeeMapper : Profile
         CreateMap<DesignationEntity, DesignationModel>().ReverseMap();
         CreateMap<CreateDesignationRequest, DesignationEntity>().ReverseMap();
         CreateMap<UpdateDesignationRequest, DesignationEntity>().ReverseMap();
+
+        #endregion
+
+        #region Branch
+        CreateMap<BranchEntity, BranchModel>().ReverseMap();
+        CreateMap<CreateBranchRequest, BranchEntity>().ReverseMap();
+        CreateMap<CreateBranchAddressModel, AddressEntity>().ReverseMap();
 
         #endregion
     }
