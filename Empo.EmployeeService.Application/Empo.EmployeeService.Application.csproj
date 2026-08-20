@@ -16,10 +16,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Empo.BuildingBlocks.Application\Empo.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Empo.BuildingBlocks.Infrastructure\Empo.BuildingBlocks.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

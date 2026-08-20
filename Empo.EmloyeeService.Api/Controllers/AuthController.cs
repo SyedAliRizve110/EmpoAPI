@@ -1,22 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+﻿using Empo.EmployeeService.Application.AuthService.Login;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Empo.EmloyeeService.Api.Controllers;
 
+[ApiController]
+[Route("api/auth")]
 public class AuthController : Controller
 {
-    public AuthController()
+    private readonly IMediator _mediator;
+    public AuthController(IMediator mediator)
     {
-            
+        _mediator = mediator;
     }
-
-   // [HttpPost]
-    //public IActionResult Login([FromBody] LoginModel model)
-    //{
-    //    if (model.UserName == "admin" && model.Password =="1234")
-    //    {
-    //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes())
-    //    }
-    //}
+    [Route("login")]
+    [HttpPost]
+    [ProducesResponseType(typeof(LoginResponse), (int)HttpStatusCode.Created)]
+    public async Task<IActionResult> Login([FromBody] LoginRequest model)
+    {
+        var response = await _mediator.Send(LoginCommand.Create(model));
+        return Ok(response);
+    }
 }

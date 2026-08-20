@@ -1,13 +1,20 @@
 ﻿using Empo.EmployeeService.Api;
+using Empo.EmployeeService.Api.Jwt;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
+using Empo.EmployeeService.Application.AuthService;
 using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
+using Empo.EmployeeService.Application.Interface;
 using Empo.EmployeeService.Infrastructure;
+using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
 using Empo.EmployeeService.Infrastructure.Data.Repositories;
+using Empo.EmployeeService.Infrastructure.Data.Repositories.AuthRepository;
+using Empo.EmployeeService.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -92,13 +99,16 @@ namespace Empo.EmloyeeService.Api
                         sql.MigrationsAssembly(assemblyName);
                     });
             });
+            services.AddScoped<PasswordHasher<UserEntity>>();
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<IEmployeeService, EmployeeRepository>();
             services.AddScoped<IAttendanceService, AttendanceRepository>();
             services.AddScoped<IDepartmentService, DepartmentRepository>();
             services.AddScoped<IDesignationService, DesignationRepository>();
             services.AddScoped<IBranchService, BranchRepository>();
-
+            services.AddScoped<IUserService, UserRepository>();
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();
 
@@ -118,6 +128,7 @@ namespace Empo.EmloyeeService.Api
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseHttpsRedirection();
             app.InitializeDataBase();
             // app.UseDeveloperExceptionPage();
 
