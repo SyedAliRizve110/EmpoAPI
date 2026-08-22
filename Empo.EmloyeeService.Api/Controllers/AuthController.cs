@@ -1,4 +1,5 @@
-﻿using Empo.EmployeeService.Application.AuthService.Login;
+﻿using Empo.EmployeeService.Application.AuthService.ForgotPassword;
+using Empo.EmployeeService.Application.AuthService.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,6 +21,16 @@ public class AuthController : Controller
     public async Task<IActionResult> Login([FromBody] LoginRequest model)
     {
         var response = await _mediator.Send(LoginCommand.Create(model));
+        return Ok(response);
+    }
+
+    [Route("forgot-password")]
+    [HttpPatch]
+    [ProducesResponseType(typeof(LoginResponse), (int)HttpStatusCode.Created)]
+
+    public async Task<IActionResult> UpdatePassword([FromBody] ForgotPasswordRequest model)
+    {
+        var response = await _mediator.Send(ForgotPasswordCommand.Create(model));
         return Ok(response);
     }
 }

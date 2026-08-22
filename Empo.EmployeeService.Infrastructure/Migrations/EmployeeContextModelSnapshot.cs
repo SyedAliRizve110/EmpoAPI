@@ -34,7 +34,8 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
                     b.Property<string>("BranchCode")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
@@ -48,7 +49,7 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("ManagerId")
+                    b.Property<Guid?>("ManagerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ModifiedBy")
@@ -56,7 +57,8 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
 
@@ -116,6 +118,22 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Address", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5"),
+                            Address1 = "22k/5b",
+                            Address2 = "Kareli",
+                            City = "Prayagraj",
+                            Country = "India",
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            State = "UP",
+                            ZipCode = "211016"
+                        });
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Department.DepartmentEntity", b =>
@@ -172,7 +190,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)");
 
@@ -312,6 +329,23 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.HasIndex("DesignationId");
 
                     b.ToTable("Employee", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("31f29e8c-1ccb-400b-99f8-9d03194ebc23"),
+                            AddressId = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateOnly(2000, 2, 1),
+                            Email = "alirizvi9721@gmail.com",
+                            EmployeeRole = 1,
+                            FirstName = "Mohd",
+                            IsActive = true,
+                            LastName = "Ali Rizvi",
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeePhoneEntity", b =>
@@ -351,6 +385,363 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Phone", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e01e7324-2d10-45ed-b8b7-a15ced9320c5"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Employee Permission",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Employee.Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("7845a4bc-aebb-4627-b307-558342fab6b5"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Employee Permission",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Employee.Get"
+                        },
+                        new
+                        {
+                            Id = new Guid("8be3f794-30f4-485d-907a-78f389884cda"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Employee Permission",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Employee.Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("f5079067-b225-4a2f-a876-ce01cc41f6cf"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Employee Permission",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Employee.List"
+                        });
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RefreshTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RoleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Full access",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("eaaf0947-b11c-4c4c-ad36-66facc063803"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Partial access",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "HR"
+                        },
+                        new
+                        {
+                            Id = new Guid("30f6262e-0b43-481a-a284-3f060c924525"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Department based access",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("364b4583-c5cf-468e-a269-fbef8e683738"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "self service access",
+                            IsActive = true,
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Employee"
+                        });
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.Role_PermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Role_Permission", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("812a175a-4342-44cb-95c4-11914d3038eb"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PermissionId = new Guid("e01e7324-2d10-45ed-b8b7-a15ced9320c5"),
+                            RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c")
+                        },
+                        new
+                        {
+                            Id = new Guid("0a396c94-6ded-4a69-a472-8c8968a957b1"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PermissionId = new Guid("7845a4bc-aebb-4627-b307-558342fab6b5"),
+                            RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c")
+                        },
+                        new
+                        {
+                            Id = new Guid("a127cfbf-7643-4905-b5b1-0a2cb6766cd1"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PermissionId = new Guid("8be3f794-30f4-485d-907a-78f389884cda"),
+                            RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c")
+                        },
+                        new
+                        {
+                            Id = new Guid("b759aee7-aeb8-429c-ac1a-31e203c38c96"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PermissionId = new Guid("f5079067-b225-4a2f-a876-ce01cc41f6cf"),
+                            RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c")
+                        });
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("User", "employee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            CreatedBy = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5"),
+                            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModifieed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@empo.com",
+                            EmailConfirmed = true,
+                            EmployeeId = new Guid("31f29e8c-1ccb-400b-99f8-9d03194ebc23"),
+                            IsActive = true,
+                            LastLoginAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PasswordHash = "$2a$12$GHDrilbduUGPyqdyNMuueOz2ervhawUXCCkF32Ve2.Ezpq2M2yuga",
+                            PhoneNumber = "9721974817",
+                            PhoneNumberConfirmed = true,
+                            RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c"),
+                            UserName = "admin1"
+                        });
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Branch.BranchEntity", b =>
@@ -415,6 +806,51 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RefreshTokenEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.Role_PermissionEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", "Permission")
+                        .WithMany("RolePermission")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.RoleEntity", "Role")
+                        .WithMany("Role_Permission")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.RoleEntity", "Role")
+                        .WithMany("User")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Branch.BranchEntity", b =>
                 {
                     b.Navigation("BranchEmployee");
@@ -436,6 +872,18 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
                     b.Navigation("Phone")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>
+                {
+                    b.Navigation("RolePermission");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RoleEntity", b =>
+                {
+                    b.Navigation("Role_Permission");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

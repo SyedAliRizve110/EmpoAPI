@@ -1,4 +1,5 @@
-﻿using Empo.EmployeeService.Application.Branch;
+﻿using Empo.EmloyeeService.Api.Authorization;
+using Empo.EmployeeService.Application.Branch;
 using Empo.EmployeeService.Application.Branch.AssignBranchEmployee;
 using Empo.EmployeeService.Application.Branch.AssignBranchManager;
 using Empo.EmployeeService.Application.Branch.BranchEmployeeList;
@@ -8,6 +9,7 @@ using Empo.EmployeeService.Application.Branch.ListBranch;
 using Empo.EmployeeService.Application.Branch.UpdateBranch;
 using Empo.EmployeeService.Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,6 +17,7 @@ namespace Empo.EmloyeeService.Api.Controllers;
 
 [Route("api/branch")]
 [ApiController]
+[Authorize]
 public class BranchController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -24,6 +27,7 @@ public class BranchController : ControllerBase
     }
     [Route("")]
     [HttpPost]
+    [HasPermission(Permissions.BranchCreate)]
     [ProducesResponseType(typeof(BranchDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request)
     {
@@ -33,6 +37,7 @@ public class BranchController : ControllerBase
 
     [Route("")]
     [HttpPut]
+    [HasPermission(Permissions.BranchUpdate)]
     [ProducesResponseType(typeof(BranchDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> UpdateBranch([FromBody] BranchModel request)
     {
@@ -42,6 +47,7 @@ public class BranchController : ControllerBase
 
     [Route("{branchId}")]
     [HttpGet]
+    [HasPermission(Permissions.BranchGet)]
     [ProducesResponseType(typeof(BranchDto), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetBranchDetailsAsync([FromRoute] Guid branchId)
     {
@@ -51,6 +57,7 @@ public class BranchController : ControllerBase
 
     [Route("list")]
     [HttpPost]
+    [HasPermission(Permissions.BranchList)]
     [ProducesResponseType(typeof(BranchListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> BranchListAsync([FromBody] BranchListRequest request)
@@ -59,8 +66,9 @@ public class BranchController : ControllerBase
         return Ok(branchList);
     }
 
-    [Route("employeelist")]
+    [Route("employee-list")]
     [HttpPost]
+    [HasPermission(Permissions.BranchEmployeeList)]
     [ProducesResponseType(typeof(BranchEmployeeListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> BranchEmployeeListAsync([FromBody] BranchEmployeeListRequest request)
@@ -70,8 +78,9 @@ public class BranchController : ControllerBase
     }
 
 
-    [Route("addemployee")]
+    [Route("assign-employee")]
     [HttpPost]
+    [HasPermission(Permissions.BranchAssignEmoloyee)]
     [ProducesResponseType(typeof(BranchDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> AssignBranchEmployee([FromBody] AssignBranchEmployeeRequest request)
     {
@@ -79,8 +88,9 @@ public class BranchController : ControllerBase
         return Ok(dto);
     }
 
-    [Route("assignmanager")]
+    [Route("assign-manager")]
     [HttpPost]
+    [HasPermission(Permissions.BranchAssignManager)]
     [ProducesResponseType(typeof(BranchDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> AssignBrnchManager([FromBody] AssignBranchManagerRequest request)
     {

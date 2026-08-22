@@ -34,6 +34,12 @@ public class EmployeeContext : DbContext
     public DbSet<UserEntity> User { get; set; }
     public DbSet<RefreshTokenEntity> RefreshToken { get; set; }
 
+    //Role and Permission
+    public DbSet<RoleEntity> Role { get; set; }
+    public DbSet<PermissionEntity> Permission { get; set; }
+    public DbSet<Role_PermissionEntity> Role_Permission { get; set; }
+   // public DbSet<User_RoleEntity> User_Role { get; set; }
+
     #endregion
 
 
@@ -46,7 +52,7 @@ public class EmployeeContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Application);
 
-         modelBuilder.SeedDataBase();
+        modelBuilder.SeedDataBase();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

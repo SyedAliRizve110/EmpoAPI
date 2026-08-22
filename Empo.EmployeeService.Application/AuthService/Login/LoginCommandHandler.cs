@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.Interface;
 
 namespace Empo.EmployeeService.Application.AuthService.Login;
@@ -8,12 +9,19 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
     private readonly IUserService _service;
     private readonly IJwtService _jwtService;
     private readonly IPasswordHasherService _passwordHasher;
+    private readonly IPermissionService _permissionService;
 
-    public LoginCommandHandler(IUserService service, IJwtService jwtservice, IPasswordHasherService passwordHasher)
+    public LoginCommandHandler(
+        IUserService service,
+        IJwtService jwtservice,
+        IPasswordHasherService passwordHasher,
+        IPermissionService permissionService
+        )
     {
         _service = service;
         _jwtService = jwtservice;
         _passwordHasher = passwordHasher;
+        _permissionService = permissionService;
     }
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -45,10 +53,12 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
                 "Invalid email or password."
                 );
         }
+        // Permissions 
 
+        var permissions = await _permissionService.GetPermissionsForRoleAsync(user.RoleId);
         //Genrate access token
 
-        var accessToken = _jwtService.GenerateAccessToken(user);
+        var accessToken = _jwtService.GenerateAccessToken(user, permissions);
 
         var accessTokenExpiry = _jwtService.GetAccessTokenExpiry();
 
@@ -76,7 +86,9 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
             RefreshToken = refreshToken,
             AccessTokenExpiresAt = accessTokenExpiry,
             UserId = user.Id,
-            EmployeeId = user.EmployeeId
+            EmployeeId = user.EmployeeId,
+            Permissions = permissions,
+            Role = user.Role.Name
         };
     }
 }

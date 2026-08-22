@@ -1,4 +1,5 @@
-﻿using Empo.EmployeeService.Application.Department.AddDepartmentEmployee;
+﻿using Empo.EmloyeeService.Api.Authorization;
+using Empo.EmployeeService.Application.Department.AddDepartmentEmployee;
 using Empo.EmployeeService.Application.Department.AssignManager;
 using Empo.EmployeeService.Application.Department.CreateDepartment;
 using Empo.EmployeeService.Application.Department.DepartmentEmployeesList;
@@ -7,6 +8,7 @@ using Empo.EmployeeService.Application.Department.ListDepartment;
 using Empo.EmployeeService.Application.Department.UpdateDepartment;
 using Empo.EmployeeService.Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -14,6 +16,7 @@ namespace Empo.EmloyeeService.Api.Controllers;
 
 [Route("api/department")]
 [ApiController]
+[Authorize]
 public class DepartmentController : Controller
 {
 
@@ -28,6 +31,7 @@ public class DepartmentController : Controller
 
     [Route("")]
     [HttpPost]
+    [HasPermission(Permissions.DepartmentCreate)]
     [ProducesResponseType(typeof(DepartmentDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentRequest request)
     {
@@ -37,6 +41,7 @@ public class DepartmentController : Controller
 
     [Route("")]
     [HttpPut]
+    [HasPermission(Permissions.DepartmentUpdate)]
     [ProducesResponseType(typeof(DepartmentDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> UpdateDepartment([FromBody] UpdateDepartmentRequestModel request)
     {
@@ -55,6 +60,7 @@ public class DepartmentController : Controller
 
     [Route("list")]
     [HttpPost]
+    [HasPermission(Permissions.DepartmentGet)]
     [ProducesResponseType(typeof(GetDepartmentListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> GetDepartmentListAsync([FromBody] GetDepartmentListRequest request)
@@ -63,8 +69,9 @@ public class DepartmentController : Controller
         return Ok(departmentList);
     }
 
-    [Route("employeelist")]
+    [Route("department-employee-list")]
     [HttpPost]
+    [HasPermission(Permissions.DepartmentList)]
     [ProducesResponseType(typeof(GetDepartmentListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> GetDepartmentEmployeeListAsync([FromBody] DepartmentEmployeeListRequest request)
@@ -74,8 +81,9 @@ public class DepartmentController : Controller
     }
 
 
-    [Route("addemployee")]
+    [Route("assign-employee")]
     [HttpPost]
+    [HasPermission(Permissions.DepartmentAssignEmoloyee)]
     [ProducesResponseType(typeof(DepartmentDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> AddDepartmentEmployee([FromBody] AddDepartmentEmployeeRequest request)
     {
@@ -83,8 +91,9 @@ public class DepartmentController : Controller
         return Ok(dto);
     }
 
-    [Route("assignmanager")]
+    [Route("assign-manager")]
     [HttpPost]
+    [HasPermission(Permissions.DepartmentAssignManager)]
     [ProducesResponseType(typeof(DepartmentDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> AssignManager([FromBody] AssignManagerRequest request)
     {

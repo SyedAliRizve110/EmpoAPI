@@ -15,16 +15,20 @@ public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    public JwtService(IConfiguration configuration)
+    public JwtService(IConfiguration configuration, IMapper mapper)
     {
         _configuration = configuration;
+        _mapper = mapper;
     }
 
-    public string GenerateAccessToken(UserModel _user)
+    public string GenerateAccessToken(UserModel _user, IEnumerable<string> permissions)
     {
         var user = _mapper.Map<UserEntity>(_user);
-        var claims = new[]
+        var claims = new List<Claim>()
         {
+            new Claim(JwtRegisteredClaimNames.Sub,
+            user.Id.ToString()),
+
             new Claim(
                 ClaimTypes.NameIdentifier,
                 user.Id.ToString()
@@ -38,13 +42,21 @@ public class JwtService : IJwtService
                 user.EmployeeId.ToString()
                 ),
             new Claim(
-                ClaimTypes.Role, 
-                user.UserRole.Role.Name
+                ClaimTypes.Role,
+                user.Role.Name
                 ),
             new Claim(
                 ClaimTypes.NameIdentifier,
-                user.UserName)
+                user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti,
+            Guid.NewGuid().ToString())
         };
+
+        foreach (var permision in permissions)
+        {
+            claims.Add(new Claim("permission", permision));
+        }
+
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(
                 _configuration["Jwt:Key"]!
@@ -77,7 +89,7 @@ public class JwtService : IJwtService
 
     public DateTime GetAccessTokenExpiry()
     {
-        return DateTime.UtcNow.AddMinutes(30);
+        return DateTime.UtcNow.AddHours(10);
     }
 
 }

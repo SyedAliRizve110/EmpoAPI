@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.AuthService;
+using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,8 @@ public class UserRepository : IUserService
     {
         var user = await _dbContext.User
             .Include(x => x.Employee)
+            .Include(x => x.Role)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email);
         var userModel = _mapper.Map<UserModel>(user);
         return userModel;
@@ -33,5 +37,15 @@ public class UserRepository : IUserService
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> UpdatePasswordAsync(string email, string HashedPassword)
+    {
+        var user = await _dbContext.User.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+        user.PasswordHash = HashedPassword;
+        user.SetDataRecorderMetadata(Constants.AdminUserId, false);
+        _dbContext.Update(user);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 }

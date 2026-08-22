@@ -16,5 +16,5 @@ public class DepartmentEntity : EntityBase
 
     [ForeignKey(nameof(ManagerId))]
     public Guid? ManagerId { get; set; }
-    public ICollection<EmployeeEntity> Employees { get; set; }
+    public ICollection<EmployeeEntity>? Employees { get; set; }
 }

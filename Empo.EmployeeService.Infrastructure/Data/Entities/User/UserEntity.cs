@@ -1,25 +1,33 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Empo.EmployeeService.Infrastructure.Data.Entities.User;
 
 public class UserEntity : EntityBase
 {
+    [MaxLength(100)]
     public string UserName { get; set; }
-    public string Email { get; set; } = string.Empty;
+
+    [MaxLength(200)]
+    public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
 
-    public string PasswordHash { get; set; } = string.Empty;
+    [MaxLength(300)]
+    public string PasswordHash { get; set; }
 
-    public string PhoneNumber { get; set; }
+    [MaxLength(100)]
+    public string? PhoneNumber { get; set; }
     public bool PhoneNumberConfirmed { get; set; }
 
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     public DateTime? LastLoginAt { get; set; }
 
-    public Guid RoleId { get; set; }
-    public User_RoleEntity UserRole { get; set; } = new User_RoleEntity();
+    [ForeignKey("RoleId")]
+    public Guid? RoleId { get; set; }
+    public RoleEntity? Role { get; set; }
 
-    public Guid EmployeeId { get; set; }
-    public EmployeeEntity Employee { get; set; } = null!;
+    public Guid? EmployeeId { get; set; }
+    public EmployeeEntity? Employee { get; set; }
 }

@@ -1,14 +1,18 @@
 ﻿using Empo.BuildingBlocks.Infrastructure.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Empo.EmployeeService.Infrastructure.Data.Entities.User;
 
 public class RoleEntity : EntityBase
 {
+    [MaxLength(200)]
     public string Name { get; set; }
-    public string Description { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string? Description { get; set; }
     public bool IsActive { get; set; }
 
     // Navigation
-    public ICollection<User_RoleEntity> UserRole { get; set; } = new List<User_RoleEntity>();
-    public ICollection<Role_PermissionEntity> Role_Permission { get; set; } = new List<Role_PermissionEntity>();
+    public ICollection<UserEntity>? User { get; set; }
+    public ICollection<Role_PermissionEntity>? Role_Permission { get; set; }
 }

@@ -19,10 +19,10 @@ public static class DataSeeder
     //Creating Roles
     private static void SeedRoleData(this ModelBuilder builder)
     {
-        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c"), Name = "Admin", Description = "Full access", IsActive = true, DateCreated = DateTime.Now, CreatedBy = Constants.AdminUserId });
-        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("eaaf0947-b11c-4c4c-ad36-66facc063803"), Name = "HR", Description = "Partial access", IsActive = true, DateCreated = DateTime.Now, CreatedBy = Constants.AdminUserId });
-        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("30f6262e-0b43-481a-a284-3f060c924525"), Name = "Manager", Description = "Department based access", IsActive = true, DateCreated = DateTime.Now, CreatedBy = Constants.AdminUserId });
-        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("364b4583-c5cf-468e-a269-fbef8e683738"), Name = "Employee", Description = "self service access", IsActive = true, DateCreated = DateTime.Now, CreatedBy = Constants.AdminUserId });
+        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c"), Name = "Admin", Description = "Full access", IsActive = true, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), CreatedBy = Constants.AdminUserId });
+        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("eaaf0947-b11c-4c4c-ad36-66facc063803"), Name = "HR", Description = "Partial access", IsActive = true, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), CreatedBy = Constants.AdminUserId });
+        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("30f6262e-0b43-481a-a284-3f060c924525"), Name = "Manager", Description = "Department based access", IsActive = true, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), CreatedBy = Constants.AdminUserId });
+        builder.Entity<RoleEntity>().HasData(new RoleEntity { Id = new Guid("364b4583-c5cf-468e-a269-fbef8e683738"), Name = "Employee", Description = "self service access", IsActive = true, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), CreatedBy = Constants.AdminUserId });
     }
     // Creating admin
     private static void CreateAdmin(this ModelBuilder builder)
@@ -35,23 +35,25 @@ public static class DataSeeder
             LastName = "Ali Rizvi",
             Email = "alirizvi9721@gmail.com",
             IsActive = true,
-            DateCreated = DateTime.Now,
+            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             CreatedBy = Constants.AdminUserId,
             DateOfBirth = new DateOnly(2000, 2, 1),
             EmployeeRole = EmployeeRoleEnum.Admin,
-            AddressId = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5"),
-            Address = new AddressEntity
-            {
-                Id = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5"),
-                Address1 = "22k/5b",
-                Address2 = "Kareli",
-                City = "Prayagraj",
-                State = "UP",
-                Country = "India",
-                ZipCode = "211016",
-                CreatedBy = Constants.AdminUserId,
-                DateCreated = DateTime.Now
-            },
+            AddressId = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5")
+        });
+
+        // Add address
+        builder.Entity<AddressEntity>().HasData(new AddressEntity
+        {
+            Id = new Guid("0f45a845-485c-41c6-a2e8-ede512c2cba5"),
+            Address1 = "22k/5b",
+            Address2 = "Kareli",
+            City = "Prayagraj",
+            State = "UP",
+            Country = "India",
+            ZipCode = "211016",
+            CreatedBy = Constants.AdminUserId,
+            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });
 
         //Add User
@@ -61,7 +63,7 @@ public static class DataSeeder
             Email = "admin@empo.com",
             UserName = "admin1",
             IsActive = true,
-            DateCreated = DateTime.Now,
+            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             CreatedBy = Constants.AdminUserId,
             EmailConfirmed = true,
             PhoneNumber = "9721974817",
@@ -69,20 +71,20 @@ public static class DataSeeder
             PasswordHash = "$2a$12$GHDrilbduUGPyqdyNMuueOz2ervhawUXCCkF32Ve2.Ezpq2M2yuga", //password = admin@123
             RoleId = new Guid("e4b49093-ab55-47a2-91ef-1681372c7e6c"),
             EmployeeId = Constants.AdminEmployeeId,
-            LastLoginAt = DateTime.Now
+            LastLoginAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });
 
         //User role
-        builder.Entity<User_RoleEntity>().HasData(
-            new User_RoleEntity
-            {
-                UserId = Constants.AdminUserId,
-                RoleId = Constants.AdminRoleId,
-                CreatedBy = Constants.AdminUserId,
-                DateCreated = DateTime.Now,
-                Id = new Guid("74fa61db-fd04-4c57-9dbb-ee733d87237a")
-            }
-            );
+        //builder.Entity<User_RoleEntity>().HasData(
+        //    new User_RoleEntity
+        //    {
+        //        UserId = Constants.AdminUserId,
+        //        RoleId = Constants.AdminRoleId,
+        //        CreatedBy = Constants.AdminUserId,
+        //        DateCreated = DateTime.Now,
+        //        Id = new Guid("74fa61db-fd04-4c57-9dbb-ee733d87237a")
+        //    }
+        //    );
 
         //Role permissions
 
@@ -94,7 +96,7 @@ public static class DataSeeder
                 RoleId = Constants.AdminRoleId,
                 PermissionId = Constants.AddEmployeePermissionId,
                 CreatedBy = Constants.AdminUserId,
-                DateCreated = DateTime.Now,
+                DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             });
 
         //get
@@ -105,7 +107,7 @@ public static class DataSeeder
         RoleId = Constants.AdminRoleId,
         PermissionId = Constants.GetEmployeePermissionId,
         CreatedBy = Constants.AdminUserId,
-        DateCreated = DateTime.Now,
+        DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
     });
 
         //update
@@ -116,7 +118,7 @@ public static class DataSeeder
         RoleId = Constants.AdminRoleId,
         PermissionId = Constants.UpdateEmployeePermissionId,
         CreatedBy = Constants.AdminUserId,
-        DateCreated = DateTime.Now,
+        DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
     });
 
         //list
@@ -127,7 +129,7 @@ public static class DataSeeder
         RoleId = Constants.AdminRoleId,
         PermissionId = Constants.ListEmployeePermissionId,
         CreatedBy = Constants.AdminUserId,
-        DateCreated = DateTime.Now,
+        DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
     });
     }
 
@@ -135,10 +137,10 @@ public static class DataSeeder
     private static void SeedPermissionData(ModelBuilder builder)
     {
         builder.Entity<PermissionEntity>().HasData(
-                new PermissionEntity { Id = Constants.AddEmployeePermissionId, Name = "Employee.Create", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = DateTime.Now },
-                new PermissionEntity { Id = Constants.GetEmployeePermissionId, Name = "Employee.Get", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = DateTime.Now },
-                new PermissionEntity { Id = Constants.UpdateEmployeePermissionId, Name = "Employee.Update", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = DateTime.Now },
-                new PermissionEntity { Id = Constants.ListEmployeePermissionId, Name = "Employee.List", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = DateTime.Now }
+                new PermissionEntity { Id = Constants.AddEmployeePermissionId, Name = "Employee.Create", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new PermissionEntity { Id = Constants.GetEmployeePermissionId, Name = "Employee.Get", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new PermissionEntity { Id = Constants.UpdateEmployeePermissionId, Name = "Employee.Update", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new PermissionEntity { Id = Constants.ListEmployeePermissionId, Name = "Employee.List", Description = "Employee Permission", IsActive = true, CreatedBy = Constants.AdminUserId, DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
             );
     }
 }

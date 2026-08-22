@@ -15,7 +15,7 @@ public class UpdateDepartmentCommandHandler : ICommandHandler<UpdateDepartmentCo
     {
         var request = command._request;
         var department = await this._service.GetDepartmentDetails(request.Id);
-        if (department.Id == request.Id)
+        if (department != null)
         {
             var _emp = await _service.UpdateDepartment(request);
             return new DepartmentDto { Id = _emp };
