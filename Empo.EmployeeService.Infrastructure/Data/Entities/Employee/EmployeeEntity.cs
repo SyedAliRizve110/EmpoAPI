@@ -27,18 +27,18 @@ public class EmployeeEntity : EntityBase
     [ForeignKey(nameof(AddressId))]
     public AddressEntity Address { get; set; }
 
-    public ICollection<EmployeeAttendanceEntity> Attendance { get; set; }
+    public ICollection<EmployeeAttendanceEntity>? Attendance { get; set; }
     public EmployeePhoneEntity Phone { get; set; }
 
     [ForeignKey(nameof(DepartmentId))]
     public Guid? DepartmentId { get; set; }
-    public DepartmentEntity Department { get; set; }
+    public DepartmentEntity? Department { get; set; }
 
     [ForeignKey(nameof(DesignationId))]
     public Guid? DesignationId { get; set; }
-    public DesignationEntity Designation { get; set; }
+    public DesignationEntity? Designation { get; set; }
 
     [ForeignKey(nameof(BranchId))]
     public Guid? BranchId { get; set; }
-    public BranchEntity Branch { get; set; }
+    public BranchEntity? Branch { get; set; }
 }

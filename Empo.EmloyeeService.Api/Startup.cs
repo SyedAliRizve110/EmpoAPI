@@ -1,15 +1,10 @@
 ﻿using Empo.EmployeeService.Api;
-using Empo.EmployeeService.Application.Attendence.ServiceInterface;
-using Empo.EmployeeService.Application.Branch.ServiceInterface;
-using Empo.EmployeeService.Application.Department.ServiceInterface;
-using Empo.EmployeeService.Application.Designations.ServiceInterface;
-using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
-using Empo.EmployeeService.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Formatting.Compact;
 using System.Text;
@@ -51,7 +46,33 @@ namespace Empo.EmloyeeService.Api
             services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
             services.AddControllers();
             services.AddMemoryCache();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter your token like this: Bearer {your token}"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -70,15 +91,6 @@ namespace Empo.EmloyeeService.Api
                     };
                 });
 
-            //services.AddAuthentication("Bearer")
-            //    .AddJwtBearer("Bearer", options =>
-            //    {
-            //        options.Authority = "https://localhost:5000"; //identityServer url
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateAudience = false
-            //        };
-            //    });
             services.AddAuthorization();
 
             // var assemblyName = this.GetAssemblyName();
@@ -92,12 +104,7 @@ namespace Empo.EmloyeeService.Api
                         sql.MigrationsAssembly(assemblyName);
                     });
             });
-
-            services.AddScoped<IEmployeeService, EmployeeRepository>();
-            services.AddScoped<IAttendanceService, AttendanceRepository>();
-            services.AddScoped<IDepartmentService, DepartmentRepository>();
-            services.AddScoped<IDesignationService, DesignationRepository>();
-            services.AddScoped<IBranchService, BranchRepository>();
+            services.AddInfrastructureServices(_config);
 
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();
@@ -118,6 +125,7 @@ namespace Empo.EmloyeeService.Api
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseHttpsRedirection();
             app.InitializeDataBase();
             // app.UseDeveloperExceptionPage();
 

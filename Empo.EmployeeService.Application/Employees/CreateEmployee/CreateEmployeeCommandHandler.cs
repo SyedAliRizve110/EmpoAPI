@@ -25,5 +25,16 @@ public class CreateEmployeeCommandHandler : ICommandHandler<CreateEmployeeComman
         {
             throw new Exception("Employee with this email already exists.");
         }
+
+        /* var passwordHash = _passwordHasher.HashPassword(request.Password);
+
+var user = new User
+{
+    Email = request.Email,
+    PasswordHash = passwordHash,
+    EmployeeId = request.EmployeeId,
+    Role = "Employee",
+    IsActive = true
+}; */
     }
 }

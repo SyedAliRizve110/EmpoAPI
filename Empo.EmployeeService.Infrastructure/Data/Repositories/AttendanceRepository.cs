@@ -56,7 +56,7 @@ public class AttendanceRepository : IAttendanceService
     {
         var attendanceEntity = _mapper.Map<EmployeeAttendanceEntity>(model);
         bool isNew = false;
-        attendanceEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        attendanceEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         _dbSet.Update(attendanceEntity);
         await _dbContext.SaveChangesAsync();
         return attendanceEntity.Id;

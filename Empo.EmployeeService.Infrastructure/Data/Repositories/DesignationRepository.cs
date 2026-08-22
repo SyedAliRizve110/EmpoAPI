@@ -26,7 +26,7 @@ public class DesignationRepository : IDesignationService
     {
         var designationEntity = _mapper.Map<DesignationEntity>(request);
         bool isNew = true;
-        designationEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        designationEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(designationEntity);
         await _dbContext.SaveChangesAsync();
         return designationEntity.Id;
@@ -77,7 +77,7 @@ public class DesignationRepository : IDesignationService
     public async Task<DesignationEntity> UpdateMetaData(DesignationEntity designationEntity, DesignationModel model)
     {
         bool isNew = false;
-        designationEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        designationEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         designationEntity.Name = model.Name;
         designationEntity.Description = model.Description;
         designationEntity.IsActive = model.IsActive;

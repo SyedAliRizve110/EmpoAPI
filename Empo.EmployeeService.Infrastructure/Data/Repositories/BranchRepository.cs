@@ -30,7 +30,7 @@ public class BranchRepository : IBranchService
     {
         var branchEntity = _mapper.Map<BranchEntity>(request);
         bool isNew = true;
-        branchEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        branchEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(branchEntity);
         await _dbContext.SaveChangesAsync();
         return branchEntity.Id;
@@ -116,7 +116,7 @@ public class BranchRepository : IBranchService
         foreach (var employee in employees)
         {
             employee.BranchId = request.BranchId;
-            employee.SetDataRecorderMetadata(Constants.UserId, false);
+            employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
         _dbContext.SaveChanges();
@@ -128,7 +128,7 @@ public class BranchRepository : IBranchService
         request.CreatedBy = branchEntity.CreatedBy;
         request.DateCreated = branchEntity.DateCreated;
         bool isNew = false;
-        branchEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        branchEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 

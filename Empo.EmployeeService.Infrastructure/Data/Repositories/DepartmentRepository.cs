@@ -31,7 +31,7 @@ public class DepartmentRepository : IDepartmentService
     {
         var departmentEntity = _mapper.Map<DepartmentEntity>(request);
         bool isNew = true; departmentEntity.IsActive = true;
-        departmentEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        departmentEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(departmentEntity);
         await _dbContext.SaveChangesAsync();
         return departmentEntity.Id;
@@ -107,7 +107,7 @@ public class DepartmentRepository : IDepartmentService
     public async Task<DepartmentEntity> UpdateMetaData(DepartmentEntity departmentEntity, UpdateDepartmentRequestModel request)
     {
         bool isNew = false;
-        departmentEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        departmentEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         departmentEntity.Name = request.Name;
         departmentEntity.Description = request.Description;
         departmentEntity.IsActive = request.IsActive;
@@ -126,7 +126,7 @@ public class DepartmentRepository : IDepartmentService
         foreach (var employee in employees)
         {
             employee.DepartmentId = request.DepartmentId;
-            employee.SetDataRecorderMetadata(Constants.UserId, false);
+            employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
         _dbContext.SaveChanges();

@@ -1,9 +1,11 @@
-﻿using Empo.EmployeeService.Application.Attendence.ActiveEmployeesList;
+﻿using Empo.EmloyeeService.Api.Authorization;
+using Empo.EmployeeService.Application.Attendence.ActiveEmployeesList;
 using Empo.EmployeeService.Application.Attendence.AttendenceList;
 using Empo.EmployeeService.Application.Attendence.ClockIn;
 using Empo.EmployeeService.Application.Attendence.ClockOut;
 using Empo.EmployeeService.Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +13,7 @@ namespace Empo.EmloyeeService.Api.Controllers;
 
 [Route("api/attendence")]
 [ApiController]
+[Authorize]
 public class AttendenceController : Controller
 {
     private readonly IMediator _mediator;
@@ -23,6 +26,7 @@ public class AttendenceController : Controller
 
     [Route("clockIn")]
     [HttpPost]
+    [HasPermission(Permissions.AttendenceClockIn)]
     [ProducesResponseType(typeof(EmployeeDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> ClockIn([FromBody] ClockInRequest request)
     {
@@ -32,6 +36,7 @@ public class AttendenceController : Controller
 
     [Route("clockOut")]
     [HttpPost]
+    [HasPermission(Permissions.AttendenceClockOut)]
     [ProducesResponseType(typeof(EmployeeDto), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> ClockOut([FromBody] ClockOutRequest request)
     {
@@ -41,6 +46,7 @@ public class AttendenceController : Controller
 
     [Route("list")]
     [HttpPost]
+    [HasPermission(Permissions.AttendenceList)]
     [ProducesResponseType(typeof(AttendanceListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> GetAttendanceListAsync([FromBody] AttendanceListRequest request)
@@ -50,8 +56,9 @@ public class AttendenceController : Controller
     }
 
 
-    [Route("activeEmployee")]
+    [Route("active-employee")]
     [HttpPost]
+    [HasPermission(Permissions.AttendenceActive)]
     [ProducesResponseType(typeof(ActiveEmployeeListResponse), (int)HttpStatusCode.OK)]
 
     public async Task<IActionResult> ActiveEmployeeListAsync([FromBody] ActiveEmployeeListRequest request)

@@ -27,7 +27,7 @@ public class EmployeeRepository : IEmployeeService
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
         bool isNew = true; employeeEntity.IsActive = true;
-        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        employeeEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
@@ -125,7 +125,7 @@ public class EmployeeRepository : IEmployeeService
         request.CreatedBy = employeeEntity.CreatedBy;
         request.DateCreated = employeeEntity.DateCreated;
         bool isNew = false;
-        employeeEntity.SetDataRecorderMetadata(Constants.UserId, isNew);
+        employeeEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 }
