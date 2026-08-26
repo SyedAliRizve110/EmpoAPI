@@ -78,4 +78,22 @@ public static class Permissions
     public const string AssignUser = "Role.Assign-User";
 
     #endregion
+
+    #region EmployeeBankDetails
+    public const string EmployeeBankCreate = "EmployeeBank.Create";
+    public const string EmployeeBankUpdate = "EmployeeBank.Update";
+    public const string EmployeeBankGet = "EmployeeBank.Get";
+    #endregion
+
+    #region EmployeeWorkHistory
+    public const string WorkHistoryCreate = "WorkHistory.Create";
+    public const string WorkHistoryUpdate = "WorkHistory.Update";
+    public const string WorkHistoryGet = "WorkHistory.Get";
+    #endregion
+
+    #region EmployeeEducation
+    public const string EmployeeEducationCreate = "EmployeeEducation.Create";
+    public const string EmployeeEducationUpdate = "EmployeeEducation.Update";
+    public const string EmployeeEducationGet = "EmployeeEducation.Get";
+    #endregion
 }

@@ -4,6 +4,8 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
+using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,4 +43,9 @@ public class EmployeeEntity : EntityBase
     [ForeignKey(nameof(BranchId))]
     public Guid? BranchId { get; set; }
     public BranchEntity? Branch { get; set; }
+
+    //navigation
+    public EmployeeBankEntity EmployeeBank { get; set; }
+    public ICollection<EmployeeWorkHistoryEntity>? WorkHistory { get; set; }
+    public ICollection<EmployeeEducationEntity>? Education { get; set; }
 }

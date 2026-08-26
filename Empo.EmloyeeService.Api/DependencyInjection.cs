@@ -5,7 +5,10 @@ using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
+using Empo.EmployeeService.Application.EmployeeBank;
+using Empo.EmployeeService.Application.EmployeeEducation;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
+using Empo.EmployeeService.Application.EmployeeWorkHistory;
 using Empo.EmployeeService.Application.Interface;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Repositories;
@@ -23,6 +26,8 @@ public static class DependencyInjection
         IConfiguration configuration
         )
     {
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddScoped<PasswordHasher<UserEntity>>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtService, JwtService>();
@@ -34,9 +39,10 @@ public static class DependencyInjection
         services.AddScoped<IBranchService, BranchRepository>();
         services.AddScoped<IUserService, UserRepository>();
         services.AddScoped<IPermissionService, PermissionRepository>();
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddScoped<IRoleService, RoleRepository>();
+        services.AddScoped<IEmployeeBankService, EmployeeBankRepository>();
+        services.AddScoped<IEmployeeWorkHistoryService, EmployeeWorkHistoryRepository>();
+        services.AddScoped<IEmployeeEducationService, EmployeeEducationRepository>();
 
         return services;
     }

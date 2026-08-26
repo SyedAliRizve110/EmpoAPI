@@ -86,7 +86,7 @@ namespace Empo.EmloyeeService.Api
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = _config["Jwt:Issuer"],
-                        ValidAudience = _config["Jwt:Audience"],
+                        ValidAudience = _config["Jwt:Audience"], 
                         IssuerSigningKey = new SymmetricSecurityKey(key)
                     };
                 });

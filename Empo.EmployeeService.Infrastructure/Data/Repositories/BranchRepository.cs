@@ -26,10 +26,10 @@ public class BranchRepository : IBranchService
         _mapper = mapper;
     }
 
-    public async Task<Guid> AddBranchAsync(CreateBranchRequest request)
+    public async Task<Guid> CreateBranchAsync(CreateBranchRequest request)
     {
         var branchEntity = _mapper.Map<BranchEntity>(request);
-        bool isNew = true;
+        bool isNew = true; branchEntity.IsActive = true;
         branchEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(branchEntity);
         await _dbContext.SaveChangesAsync();
@@ -38,7 +38,7 @@ public class BranchRepository : IBranchService
 
     public async Task<Guid> UpdateBranchAsync(BranchModel request)
     {
-        var branchEntity = await _dbContext.Branch.FirstOrDefaultAsync(e => e.Id == request.Id);
+        var branchEntity = await _dbContext.Branch.AsNoTracking().FirstOrDefaultAsync(e => e.Id == request.Id);
         var _request = _mapper.Map<BranchEntity>(request);
         var updatedEntity = await UpdateMetaData(branchEntity, _request);
         _dbSet.Update(updatedEntity);
@@ -107,11 +107,6 @@ public class BranchRepository : IBranchService
 
     public Task<Guid> AssigBranchEmployee(AssignBranchEmployeeRequest request)
     {
-        var branchEntity = _dbContext.Branch.Find(request.BranchId);
-        if (branchEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var employees = _dbContext.Employee.Where(e => request.EmployeeId.Contains(e.Id)).ToList();
         foreach (var employee in employees)
         {
@@ -120,7 +115,7 @@ public class BranchRepository : IBranchService
             _dbContext.Employee.Update(employee);
         }
         _dbContext.SaveChanges();
-        return Task.FromResult(branchEntity.Id);
+        return Task.FromResult(request.BranchId);
     }
 
     public async Task<BranchEntity> UpdateMetaData(BranchEntity branchEntity, BranchEntity request)
@@ -139,5 +134,11 @@ public class BranchRepository : IBranchService
         _dbContext.Branch.Update(branch);
         await _dbContext.SaveChangesAsync();
         return branch.Id;
+    }
+
+    public async Task<bool> IsBranchExist(Guid id)
+    {
+        var exist = _dbContext.Branch.Any(x => x.Id == id);
+        return exist;
     }
 }

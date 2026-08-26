@@ -4,8 +4,10 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
+using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 using Empo.EmployeeService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -26,6 +28,9 @@ public class EmployeeContext : DbContext
     public DbSet<DepartmentEntity> Department { get; set; }
     public DbSet<DesignationEntity> Designation { get; set; }
     public DbSet<BranchEntity> Branch { get; set; }
+    public DbSet<EmployeeBankEntity> EmployeeBank { get; set; }
+    public DbSet<EmployeeEducationEntity> Education { get; set; }
+    public DbSet<EmployeeWorkHistoryEntity> WorkHistory { get; set; }
 
     #endregion
 
@@ -38,7 +43,7 @@ public class EmployeeContext : DbContext
     public DbSet<RoleEntity> Role { get; set; }
     public DbSet<PermissionEntity> Permission { get; set; }
     public DbSet<Role_PermissionEntity> Role_Permission { get; set; }
-   // public DbSet<User_RoleEntity> User_Role { get; set; }
+    // public DbSet<User_RoleEntity> User_Role { get; set; }
 
     #endregion
 
@@ -49,7 +54,7 @@ public class EmployeeContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeContext).Assembly);
+        // modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Application);
 
         modelBuilder.SeedDataBase();

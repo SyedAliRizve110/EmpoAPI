@@ -18,8 +18,8 @@ public class AssignBranchEmployeeCommandHandler : ICommandHandler<AssignBranchEm
     public async Task<BranchDto> Handle(AssignBranchEmployeeCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
-        var branch = await _service.GetBranchDetails(request.BranchId);
-        if (branch != null)
+        var branch = await _service.IsBranchExist(request.BranchId);
+        if (branch)
         {
             var branchId = await _service.AssigBranchEmployee(request);
             return new BranchDto { Id = branchId };

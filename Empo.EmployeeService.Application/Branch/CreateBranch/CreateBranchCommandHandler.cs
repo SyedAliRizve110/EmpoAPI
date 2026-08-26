@@ -15,7 +15,7 @@ public class CreateBranchCommandHandler : ICommandHandler<CreateBranchCommand, B
     public async Task<BranchDto> Handle(CreateBranchCommand command, CancellationToken cancellationToken)
     {
         var request = command._request;
-        var branch = await _service.AddBranchAsync(request);
+        var branch = await _service.CreateBranchAsync(request);
         return new BranchDto { Id = branch };
     }
 }

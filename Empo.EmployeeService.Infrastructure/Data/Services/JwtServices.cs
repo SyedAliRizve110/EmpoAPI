@@ -72,7 +72,7 @@ public class JwtService : IJwtService
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audince"],
+            audience: _configuration["Jwt:Audience"],
             claims: claims,
             expires: expires,
             signingCredentials: credentials

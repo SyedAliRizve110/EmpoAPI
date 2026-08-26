@@ -49,7 +49,7 @@ public class EmployeeController : Controller
     [HttpGet]
     [HasPermission(Permissions.EmployeeGet)] // anyone with Employee.Get
     [ProducesResponseType(typeof(EmployeeModel), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetVenderDetailsAsync([FromRoute] Guid employeeId)
+    public async Task<IActionResult> GetEmployeeDetailsAsync([FromRoute] Guid employeeId)
     {
         var vendorDetails = await _mediator.Send(GetEmployeeDetailsQuery.Create(employeeId));
         return Ok(vendorDetails);

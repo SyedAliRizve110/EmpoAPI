@@ -17,14 +17,23 @@ using Empo.EmployeeService.Application.Department.UpdateDepartment;
 using Empo.EmployeeService.Application.Designations;
 using Empo.EmployeeService.Application.Designations.CreateDesignation;
 using Empo.EmployeeService.Application.Designations.UpdateDesignation;
+using Empo.EmployeeService.Application.EmployeeBank;
+using Empo.EmployeeService.Application.EmployeeBank.Create;
+using Empo.EmployeeService.Application.EmployeeEducation;
+using Empo.EmployeeService.Application.EmployeeEducation.CreateEmployeeEducation;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
+using Empo.EmployeeService.Application.EmployeeWorkHistory;
+using Empo.EmployeeService.Application.EmployeeWorkHistory.CreateEmployeeWorkHistory;
+using Empo.EmployeeService.Application.EmployeeWorkHistory.UpdateEmployeeWorkHistory;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
+using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 
 namespace Empo.EmployeeService.Infrastructure.Data.Mappers;
 
@@ -41,6 +50,11 @@ public class EmployeeMapper : Profile
         CreateMap<CreateEmployeeRequestModel, EmployeeEntity>().ReverseMap();
         CreateMap<CreateEmployeeAddressModel, AddressEntity>().ReverseMap();
         CreateMap<CreateEmployeePhoneModel, EmployeePhoneEntity>().ReverseMap();
+
+        // employee bank
+        CreateMap<CreateEmployeeBankRequest, EmployeeBankEntity>().ReverseMap();
+        CreateMap<EmployeeBankModel, EmployeeBankEntity>().ReverseMap();
+
 
         #endregion
 
@@ -85,6 +99,17 @@ public class EmployeeMapper : Profile
         CreateMap<CreatePermissionRequest, PermissionEntity>().ReverseMap();
         CreateMap<PermissionEntity, PermissionResponseModel>().ReverseMap();
         CreateMap<PermissionEntity, PermissionModel>().ReverseMap();
+        #endregion
+
+        #region WorkHistory
+        CreateMap<CreateEmployeeWorkHistoryModel, EmployeeWorkHistoryEntity>().ReverseMap();
+        CreateMap<EmployeeWorkHistoryModel, EmployeeWorkHistoryEntity>().ReverseMap();
+        CreateMap<UpdateEmployeeWorkHistoryRequest, EmployeeWorkHistoryEntity>().ReverseMap();
+        #endregion
+
+        #region Education
+        CreateMap<CreateEmployeeEducationModel, EmployeeEducationEntity>().ReverseMap();
+        CreateMap<EmployeeEducationModel, EmployeeEducationEntity>().ReverseMap();
         #endregion
     }
 }

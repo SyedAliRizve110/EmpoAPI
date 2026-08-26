@@ -11,7 +11,7 @@ namespace Empo.EmloyeeService.Api.Authorization
             bool hasPermission = context.User.Claims
                 .Any(c => c.Type == "permission" && c.Value == requirement.Permission);
 
-            if (!hasPermission)
+            if (hasPermission)
                 context.Succeed(requirement);
             return Task.CompletedTask;
         }

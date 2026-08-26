@@ -55,6 +55,15 @@ public static class DataSeeder
             CreatedBy = Constants.AdminUserId,
             DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });
+        builder.Entity<EmployeePhoneEntity>().HasData(new EmployeePhoneEntity
+        {
+            Id = new Guid("22191c8f-6ba1-477a-bfd7-43daac6fa2bc"),
+            EmployeeId = Constants.AdminEmployeeId,
+            CountryCode = "+91",
+            Number = "9721974817",
+            CreatedBy = Constants.AdminUserId,
+            DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        });
 
         //Add User
         builder.Entity<UserEntity>().HasData(new UserEntity

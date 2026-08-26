@@ -8,12 +8,12 @@ namespace Empo.EmployeeService.Application.Branch.ServiceInterface;
 
 public interface IBranchService
 {
-    Task<Guid> AddBranchAsync(CreateBranchRequest request);
+    Task<Guid> CreateBranchAsync(CreateBranchRequest request);
     Task<Guid> UpdateBranchAsync(BranchModel request);
     Task<BranchModel> GetBranchDetails(Guid id);
     Task<BranchListResponse> BranchListAsync(BranchListRequest request);
     Task<BranchEmployeeListResponse> BranchEmployeeListAsync(BranchEmployeeListRequest request);
-    // Task<Guid> AddBranchEmployeeAsync(AddBranchEmployeeRequest request);
     Task<Guid> AssigBranchEmployee(AssignBranchEmployeeRequest request);
     Task<Guid> AssigBranchManager(AssignBranchManagerRequest request);
+    Task<bool> IsBranchExist(Guid id);
 }

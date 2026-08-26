@@ -14,8 +14,8 @@ public class UpdateBranchCommandHandler : ICommandHandler<UpdateBranchCommand, B
     public async Task<BranchDto> Handle(UpdateBranchCommand command, CancellationToken cancellationToken)
     {
         var request = command._request;
-        var branch = await this._service.GetBranchDetails(request.Id);
-        if (branch.Id == request.Id)
+        var branch = await this._service.IsBranchExist(request.Id);
+        if (branch)
         {
             var _branch = await _service.UpdateBranchAsync(request);
             return new BranchDto { Id = _branch };
