@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
 
@@ -23,7 +24,7 @@ public class UpdateDesignationCommandHandler : ICommandHandler<UpdateDesignation
         }
         else
         {
-            throw new Exception("Employee with this email already exists.");
+            throw new NotFoundException("Employee", request.Id);
         }
     }
 }

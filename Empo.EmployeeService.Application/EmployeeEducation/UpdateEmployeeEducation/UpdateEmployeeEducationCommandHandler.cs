@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Models;
 
 namespace Empo.EmployeeService.Application.EmployeeEducation.UpdateEmployeeEducation
@@ -18,7 +19,7 @@ namespace Empo.EmployeeService.Application.EmployeeEducation.UpdateEmployeeEduca
             var existing = await _service.GetEmployeeEducationById(request.Id);
             if (existing == null)
             {
-                throw new Exception("Education record not found.");
+                throw new NotFoundException("Education", request.EmployeeId);
             }
             else
             {

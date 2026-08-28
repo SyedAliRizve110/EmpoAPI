@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Models;
 
 namespace Empo.EmployeeService.Application.EmployeeWorkHistory.UpdateEmployeeWorkHistory;
@@ -18,7 +19,7 @@ public class UpdateEmployeeWorkHistoryCommandHandler : ICommandHandler<UpdateEmp
         var existing = await _service.GetEmployeeWorkHistoryById(request.Id);
         if (existing == null)
         {
-            throw new Exception("Work history record not found.");
+            throw new NotFoundException("Work History", request.EmployeeId);
         }
         else
         {

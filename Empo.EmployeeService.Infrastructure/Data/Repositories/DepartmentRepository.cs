@@ -49,10 +49,6 @@ public class DepartmentRepository : IDepartmentService
     public async Task<GetDepartmentDetailsResponse> GetDepartmentDetails(Guid id)
     {
         var departmentEntity = _dbSet.AsNoTracking().Where(e => e.Id == id).FirstOrDefault();
-        if (departmentEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var departmentModel = _mapper.Map<GetDepartmentDetailsResponse>(departmentEntity);
         return departmentModel;
     }
@@ -118,10 +114,6 @@ public class DepartmentRepository : IDepartmentService
     public Task<Guid> AddDepartmentEmployeeAsync(AddDepartmentEmployeeRequest request)
     {
         var departmentEntity = _dbContext.Department.Find(request.DepartmentId);
-        if (departmentEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var employees = _dbContext.Employee.Where(e => request.EmployeesId.Contains(e.Id)).ToList();
         foreach (var employee in employees)
         {

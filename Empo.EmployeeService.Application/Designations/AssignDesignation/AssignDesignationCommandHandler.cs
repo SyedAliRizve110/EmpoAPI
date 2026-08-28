@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
@@ -25,6 +26,6 @@ public class AssignDesignationCommandHandler : ICommandHandler<AssignDesignation
             var designationId = await _service.AssignDesignationAsync(request);
             return new DesignationDto { Id = designationId };
         }
-        else throw new Exception("No Designation or Employee found with this id");
+        else throw new NotFoundException("Designation", request.DesignationId);
     }
 }

@@ -49,10 +49,6 @@ public class BranchRepository : IBranchService
     public async Task<BranchModel> GetBranchDetails(Guid id)
     {
         var branchEntity = _dbSet.AsNoTracking().Where(e => e.Id == id).Include(x => x.Address).FirstOrDefault();
-        if (branchEntity == null)
-        {
-            throw new Exception("Employee not found.");
-        }
         var branchModel = _mapper.Map<BranchModel>(branchEntity);
         return branchModel;
     }

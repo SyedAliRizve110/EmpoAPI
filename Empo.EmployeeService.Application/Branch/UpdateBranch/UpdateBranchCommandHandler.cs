@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
 
@@ -22,7 +23,7 @@ public class UpdateBranchCommandHandler : ICommandHandler<UpdateBranchCommand, B
         }
         else
         {
-            throw new Exception("Branch with this email does not exists.");
+            throw new NotFoundException("Branch", request.Id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Models;
 
 namespace Empo.EmployeeService.Application.EmployeeBank.Create;
@@ -23,7 +24,7 @@ public class CreateEmployeeBankCommandHandler : ICommandHandler<CreateEmployeeBa
         }
         else
         {
-            throw new Exception("Bank details with this account number already exist.");
+            throw new AlreadyExistsException("Bank Details", "account number", request.AccountNumber);
         }
     }
 }

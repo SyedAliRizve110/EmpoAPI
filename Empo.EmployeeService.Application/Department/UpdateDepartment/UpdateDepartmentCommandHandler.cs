@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
 
@@ -22,7 +23,7 @@ public class UpdateDepartmentCommandHandler : ICommandHandler<UpdateDepartmentCo
         }
         else
         {
-            throw new Exception("Department with this name does not exists.");
+            throw new NotFoundException("Department", request.Id);
         }
     }
 }

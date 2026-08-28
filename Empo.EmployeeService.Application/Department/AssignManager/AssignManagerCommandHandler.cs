@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
@@ -25,6 +26,6 @@ public class AssignManagerCommandHandler : ICommandHandler<AssignManagerCommand,
             var departmentId = await _service.AssignManagerAsync(request);
             return new DepartmentDto { Id = departmentId };
         }
-        else throw new Exception("No Departmnt or Employee found with this id");
+        else throw new NotFoundException("Department", request.DepartmentId);
     }
 }

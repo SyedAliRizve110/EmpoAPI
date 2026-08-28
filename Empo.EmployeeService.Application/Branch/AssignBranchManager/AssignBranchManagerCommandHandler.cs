@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
@@ -18,13 +19,13 @@ public class AssignBranchManagerCommandHandler : ICommandHandler<AssignBranchMan
     public async Task<BranchDto> Handle(AssignBranchManagerCommand command, CancellationToken cancellationToken)
     {
         var request = command.request;
-        var branch = await _service.GetBranchDetails(request.BranchId);
+        var branch = await _service.IsBranchExist(request.BranchId);
         var employee = await _empservice.GetEmployeeDetails(request.ManagerId);
-        if (branch != null && employee != null)
+        if (branch == true && employee != null)
         {
             var branchId = await _service.AssigBranchManager(request);
             return new BranchDto { Id = branchId };
         }
-        else throw new Exception("No branch or Employee found with this id");
+        else throw new NotFoundException("Branch", request.BranchId);
     }
 }

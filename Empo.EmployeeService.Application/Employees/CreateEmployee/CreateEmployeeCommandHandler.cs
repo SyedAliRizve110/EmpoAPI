@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
 
@@ -23,18 +24,7 @@ public class CreateEmployeeCommandHandler : ICommandHandler<CreateEmployeeComman
         }
         else
         {
-            throw new Exception("Employee with this email already exists.");
+            throw new AlreadyExistsException("Employee", "email", request.Email);
         }
-
-        /* var passwordHash = _passwordHasher.HashPassword(request.Password);
-
-var user = new User
-{
-    Email = request.Email,
-    PasswordHash = passwordHash,
-    EmployeeId = request.EmployeeId,
-    Role = "Employee",
-    IsActive = true
-}; */
     }
 }

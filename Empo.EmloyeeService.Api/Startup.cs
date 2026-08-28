@@ -125,6 +125,7 @@ namespace Empo.EmloyeeService.Api
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseGlobalExceptionHandling();
             app.UseHttpsRedirection();
             app.InitializeDataBase();
             // app.UseDeveloperExceptionPage();

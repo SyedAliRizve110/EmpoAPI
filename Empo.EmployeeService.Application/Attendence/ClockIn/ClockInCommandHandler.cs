@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
 
@@ -23,7 +24,7 @@ public class ClockInCommandHandler : ICommandHandler<ClockInCommand, EmployeeDto
         }
         else
         {
-            throw new Exception("Session is already active");
+            throw new ConflictException("Session is already active.");
         }
     }
 

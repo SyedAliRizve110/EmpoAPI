@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Models;
 
 namespace Empo.EmployeeService.Application.EmployeeBank.Update;
@@ -18,7 +19,7 @@ public class UpdateEmployeeBankCommandHandler : ICommandHandler<UpdateEmployeeBa
         var bank = await this._service.GetEmployeeBank(request.EmployeeId);
         if (bank == null || bank.Id != request.Id)
         {
-            throw new Exception("Bank details not found.");
+            throw new NotFoundException("Bank", request.EmployeeId);
         }
         else
         {

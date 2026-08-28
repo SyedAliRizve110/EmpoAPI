@@ -34,10 +34,6 @@ public class DesignationRepository : IDesignationService
     public async Task<DesignationModel> GetAsync(Guid id)
     {
         var designationEntity = _dbSet.AsNoTracking().Where(e => e.Id == id).FirstOrDefault();
-        if (designationEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var designationModel = _mapper.Map<DesignationModel>(designationEntity);
         return designationModel;
     }

@@ -59,10 +59,6 @@ public class EmployeeRepository : IEmployeeService
     public async Task<EmployeeModel> GetEmployeeDetails(Guid employeeId)
     {
         var employeeEntity = _dbSet.AsNoTracking().Where(e => e.Id == employeeId).Include(x => x.Phone).Include(x => x.Address).FirstOrDefault();
-        if (employeeEntity == null)
-        {
-            throw new Exception("Employee not found.");
-        }
         var employeeModel = _mapper.Map<EmployeeModel>(employeeEntity);
         return employeeModel;
     }
