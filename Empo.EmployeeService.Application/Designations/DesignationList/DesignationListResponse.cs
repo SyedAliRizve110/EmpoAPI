@@ -2,6 +2,6 @@
 
 public class DesignationListResponse
 {
-    public IEnumerable<DesignationModel> Collecion { get; set; }
+    public IEnumerable<DesignationModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public class PermissionListResponse
 {
-    public IEnumerable<PermissionResponseModel> Collecion { get; set; }
+    public IEnumerable<PermissionResponseModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }
 

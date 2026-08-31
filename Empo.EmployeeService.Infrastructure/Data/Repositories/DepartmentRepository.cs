@@ -49,10 +49,6 @@ public class DepartmentRepository : IDepartmentService
     public async Task<GetDepartmentDetailsResponse> GetDepartmentDetails(Guid id)
     {
         var departmentEntity = _dbSet.AsNoTracking().Where(e => e.Id == id).FirstOrDefault();
-        if (departmentEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var departmentModel = _mapper.Map<GetDepartmentDetailsResponse>(departmentEntity);
         return departmentModel;
     }
@@ -75,7 +71,7 @@ public class DepartmentRepository : IDepartmentService
 
         var departmentList = new GetDepartmentListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return Task.FromResult(departmentList);
@@ -100,7 +96,7 @@ public class DepartmentRepository : IDepartmentService
                      }).AsNoTracking().ToListAsync();
         var departmentList = new DepartmentEmployeeListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         }; return Task.FromResult(departmentList);
     }
@@ -115,13 +111,9 @@ public class DepartmentRepository : IDepartmentService
         return departmentEntity;
     }
 
-    public Task<Guid> AddDepartmentEmployeeAsync(AddDepartmentEmployeeRequest request)
+    public async Task<Guid> AddDepartmentEmployeeAsync(AddDepartmentEmployeeRequest request)
     {
         var departmentEntity = _dbContext.Department.Find(request.DepartmentId);
-        if (departmentEntity == null)
-        {
-            throw new Exception("Department not found.");
-        }
         var employees = _dbContext.Employee.Where(e => request.EmployeesId.Contains(e.Id)).ToList();
         foreach (var employee in employees)
         {
@@ -129,8 +121,8 @@ public class DepartmentRepository : IDepartmentService
             employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
-        _dbContext.SaveChanges();
-        return Task.FromResult(departmentEntity.Id);
+        _dbContext.SaveChangesAsync();
+        return departmentEntity.Id;
     }
 
     public async Task<Guid> AssignManagerAsync(AssignManagerRequest request)

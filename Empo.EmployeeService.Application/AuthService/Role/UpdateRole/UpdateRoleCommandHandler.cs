@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.Models;
 
@@ -22,7 +23,7 @@ public class UpdateRoleCommandHandler : ICommandHandler<UpdateRoleCommand, RoleD
         }
         else
         {
-            throw new Exception("Role with this name does not exists.");
+            throw new NotFoundException("Role", "name", request.Name);
         }
     }
 }

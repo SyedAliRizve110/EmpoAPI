@@ -4,6 +4,6 @@ namespace Empo.EmployeeService.Application.Employees.GetEmployeeList;
 
 public class GetEmployeeListResponse
 {
-    public IEnumerable<EmployeeModel> Collecion { get; set; }
+    public IEnumerable<EmployeeModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Attendence.ClockIn;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
@@ -20,7 +21,7 @@ public class ClockOutCommandHandler : ICommandHandler<ClockOutCommand, EmployeeD
         var sessoion = await _service.GetOpenSession(request.EmployeeId);
         if (sessoion == null)
         {
-            throw new Exception("No active Session found");
+            throw new InvalidOperationAppException("No active Session found");
         }
         else
         {

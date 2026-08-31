@@ -110,7 +110,7 @@ public class AttendanceRepository : IAttendanceService
                      }).AsNoTracking().ToListAsync();
         var employeeList = new ActiveEmployeeListResponse
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return Task.FromResult(employeeList);

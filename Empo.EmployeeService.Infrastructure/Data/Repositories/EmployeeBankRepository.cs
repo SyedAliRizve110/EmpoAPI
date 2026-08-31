@@ -56,10 +56,6 @@ public class EmployeeBankRepository : IEmployeeBankService
     public async Task<EmployeeBankModel> GetEmployeeBank(Guid employeeId)
     {
         var bankEntity = _dbSet.AsNoTracking().FirstOrDefault(b => b.EmployeeId == employeeId);
-        if (bankEntity == null)
-        {
-            throw new Exception("Bank details not found.");
-        }
         var bankModel = _mapper.Map<EmployeeBankModel>(bankEntity);
         return bankModel;
     }

@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.Interface;
 
@@ -23,7 +24,7 @@ public class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordComman
         var request = command._request;
         var user = await _service.GetByEmailAsync(request.Email);
         if (user == null)
-            throw new Exception("No user found with this email");
+            throw new AuthenticationException("Invalid email or password.");
         else
         {
             var hashedPassword = await _passwordHasher.HashPassword(request.Email, request.Password);

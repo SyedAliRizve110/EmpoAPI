@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.Models;
 
@@ -18,11 +19,11 @@ public class RoleStatusCommandHandler : ICommandHandler<RoleStatusCommand, RoleD
         if (role != null)
         {
             var hasAssigned = await _service.HasRoleAssigned(role.Id);
-            if (hasAssigned) throw new Exception("Role is assigned to a user");
+            if (hasAssigned) throw new ConflictException("This role is still assigned to one or more users and cannot be deactivated.");
 
             var roleId = await _service.UpdateStatusAsync(request);
             return new RoleDto { Id = roleId };
         }
-        else { throw new Exception("Role with this name does not exists."); }
+        else { throw new NotFoundException("Role", "Id", request.Id); }
     }
 }

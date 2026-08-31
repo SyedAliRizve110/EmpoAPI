@@ -21,7 +21,7 @@ namespace Empo.EmloyeeService.Api
         public Startup(IWebHostEnvironment env)
         {
             _logger = ConfigureLogger();
-            _logger.Information("<ogger Configured");
+            _logger.Information("<logger Configured");
 
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
             if (env.EnvironmentName.ToLower() == "development")
@@ -46,6 +46,15 @@ namespace Empo.EmloyeeService.Api
             services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
             services.AddControllers();
             services.AddMemoryCache();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCustomPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+                });
+            });
             services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -74,7 +83,6 @@ namespace Empo.EmloyeeService.Api
                 });
             });
 
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -86,7 +94,7 @@ namespace Empo.EmloyeeService.Api
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = _config["Jwt:Issuer"],
-                        ValidAudience = _config["Jwt:Audience"], 
+                        ValidAudience = _config["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(key)
                     };
                 });
@@ -125,18 +133,19 @@ namespace Empo.EmloyeeService.Api
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseGlobalExceptionHandling();
             app.UseHttpsRedirection();
             app.InitializeDataBase();
             // app.UseDeveloperExceptionPage();
 
             app.UseRouting();
+            app.UseCors("MyCustomPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            app.UseCors();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

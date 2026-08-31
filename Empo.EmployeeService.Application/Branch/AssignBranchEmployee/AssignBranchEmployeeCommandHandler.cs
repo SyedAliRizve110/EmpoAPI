@@ -1,4 +1,5 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
 using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.Models;
@@ -24,6 +25,6 @@ public class AssignBranchEmployeeCommandHandler : ICommandHandler<AssignBranchEm
             var branchId = await _service.AssigBranchEmployee(request);
             return new BranchDto { Id = branchId };
         }
-        else throw new Exception("No Departmnt or Employee found with this id");
+        else throw new NotFoundException("Branch", request.BranchId);
     }
 }

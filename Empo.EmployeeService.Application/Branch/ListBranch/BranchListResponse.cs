@@ -2,6 +2,6 @@
 
 public class BranchListResponse
 {
-    public IEnumerable<BranchModel> Collecion { get; set; }
+    public IEnumerable<BranchModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }
