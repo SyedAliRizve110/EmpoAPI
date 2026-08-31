@@ -93,7 +93,7 @@ public class RoleRepository : IRoleService
 
         var roleList = new RoleListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return Task.FromResult(roleList);

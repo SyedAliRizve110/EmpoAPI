@@ -2,7 +2,7 @@
 
 public class DepartmentEmployeeListResponse
 {
-    public IEnumerable<DepartmentEmployeeModel> Collecion { get; set; }
+    public IEnumerable<DepartmentEmployeeModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }
 

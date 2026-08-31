@@ -56,7 +56,7 @@ public class DesignationRepository : IDesignationService
 
         var designationlist = new DesignationListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return designationlist;
@@ -98,7 +98,7 @@ public class DesignationRepository : IDesignationService
                      }).AsNoTracking().ToListAsync();
         var designationList = new DesignationEmployeeListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         }; return Task.FromResult(designationList);
     }

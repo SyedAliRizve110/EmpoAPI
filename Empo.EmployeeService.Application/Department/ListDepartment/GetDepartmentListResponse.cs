@@ -2,6 +2,6 @@
 
 public class GetDepartmentListResponse
 {
-    public IEnumerable<DepartmentModel> Collecion { get; set; }
+    public IEnumerable<DepartmentModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }

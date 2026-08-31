@@ -72,7 +72,7 @@ public class BranchRepository : IBranchService
 
         var branchList = new BranchListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return Task.FromResult(branchList);
@@ -96,12 +96,12 @@ public class BranchRepository : IBranchService
                      }).AsNoTracking().ToListAsync();
         var branchList = new BranchEmployeeListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         }; return Task.FromResult(branchList);
     }
 
-    public Task<Guid> AssigBranchEmployee(AssignBranchEmployeeRequest request)
+    public async Task<Guid> AssigBranchEmployee(AssignBranchEmployeeRequest request)
     {
         var employees = _dbContext.Employee.Where(e => request.EmployeeId.Contains(e.Id)).ToList();
         foreach (var employee in employees)
@@ -110,8 +110,8 @@ public class BranchRepository : IBranchService
             employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
-        _dbContext.SaveChanges();
-        return Task.FromResult(request.BranchId);
+         await _dbContext.SaveChangesAsync();
+        return request.BranchId;
     }
 
     public async Task<BranchEntity> UpdateMetaData(BranchEntity branchEntity, BranchEntity request)

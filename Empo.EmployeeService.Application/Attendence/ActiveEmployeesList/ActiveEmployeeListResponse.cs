@@ -5,7 +5,7 @@ namespace Empo.EmployeeService.Application.Attendence.ActiveEmployeesList;
 
 public class ActiveEmployeeListResponse
 {
-    public IEnumerable<ActiveListUserModel> Collecion { get; set; }
+    public IEnumerable<ActiveListUserModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }
 

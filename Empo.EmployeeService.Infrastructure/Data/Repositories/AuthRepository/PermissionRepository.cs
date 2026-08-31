@@ -57,7 +57,7 @@ public class PermissionRepository : IPermissionService
 
         var permissionList = new PermissionListResponse()
         {
-            Collecion = query.Result,
+            Collection = query.Result,
             TotalRecords = query.Result.Count()
         };
         return Task.FromResult(permissionList);

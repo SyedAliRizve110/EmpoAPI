@@ -2,7 +2,7 @@
 
 public class RoleListResponse
 {
-    public IEnumerable<RoleResponseModel> Collecion { get; set; }
+    public IEnumerable<RoleResponseModel> Collection { get; set; }
     public long TotalRecords { get; set; }
 }
 

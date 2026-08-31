@@ -110,7 +110,7 @@ public class EmployeeRepository : IEmployeeService
                      }).ToListAsync();
         var employeeList = new GetEmployeeListResponse
         {
-            Collecion = await query,
+            Collection = await query,
             TotalRecords = query.Result.Count()
         };
         return employeeList;
