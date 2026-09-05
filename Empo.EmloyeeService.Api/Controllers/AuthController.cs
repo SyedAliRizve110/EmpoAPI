@@ -1,6 +1,7 @@
 ﻿using Empo.EmployeeService.Application.AuthService.ForgotPassword;
 using Empo.EmployeeService.Application.AuthService.Login;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace Empo.EmloyeeService.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[AllowAnonymous]
 public class AuthController : Controller
 {
     private readonly IMediator _mediator;

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.AuthService;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
@@ -43,7 +42,6 @@ public class UserRepository : IUserService
     {
         var user = await _dbContext.User.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
         user.PasswordHash = HashedPassword;
-        user.SetDataRecorderMetadata(Constants.AdminUserId, false);
         _dbContext.Update(user);
         await _dbContext.SaveChangesAsync();
         return true;

@@ -11,20 +11,20 @@ public abstract class EntityBase
     {
     }
 
-    public void SetDataRecorderMetadata(Guid userId, bool IsNew)
+    public void SetDataRecorderMetadata(Guid? userId, bool IsNew)
     {
         if (IsNew)
         {
 
             DateCreated = DateTime.UtcNow;
-            CreatedBy = userId;
+            CreatedBy = userId ?? Guid.Empty;
             DateModifieed = DateTime.UtcNow;
-            ModifiedBy = userId;
+            ModifiedBy = userId ?? Guid.Empty;
         }
         else
         {
             DateModifieed = DateTime.UtcNow;
-            ModifiedBy = userId;
+            ModifiedBy = userId ?? Guid.Empty;
         }
     }
 }

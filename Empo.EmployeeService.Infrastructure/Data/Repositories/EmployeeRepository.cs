@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.CommonRequestModel;
 using Empo.EmployeeService.Application.Employees.CreateEmployee;
 using Empo.EmployeeService.Application.Employees.EmployeesModel;
@@ -26,8 +25,7 @@ public class EmployeeRepository : IEmployeeService
     public async Task<Guid> AddEmployee(CreateEmployeeRequestModel request)
     {
         var employeeEntity = _mapper.Map<EmployeeEntity>(request);
-        bool isNew = true; employeeEntity.IsActive = true;
-        employeeEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
+        employeeEntity.IsActive = true;
         await _dbSet.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
@@ -38,7 +36,7 @@ public class EmployeeRepository : IEmployeeService
         var employeeEntity = await _dbContext.Employee.FirstOrDefaultAsync(e => e.Id == request.Id);
         var _request = _mapper.Map<EmployeeEntity>(request);
         _request.Attendance = null;
-        var updatedEntity = await UpdateMetaData(employeeEntity, _request);
+        var updatedEntity = await UpdateData(employeeEntity, _request);
         _dbSet.Update(updatedEntity);
         await _dbContext.SaveChangesAsync();
         return employeeEntity.Id;
@@ -116,12 +114,10 @@ public class EmployeeRepository : IEmployeeService
         return employeeList;
     }
 
-    public async Task<EmployeeEntity> UpdateMetaData(EmployeeEntity employeeEntity, EmployeeEntity request)
+    public async Task<EmployeeEntity> UpdateData(EmployeeEntity employeeEntity, EmployeeEntity request)
     {
         request.CreatedBy = employeeEntity.CreatedBy;
         request.DateCreated = employeeEntity.DateCreated;
-        bool isNew = false;
-        employeeEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 }

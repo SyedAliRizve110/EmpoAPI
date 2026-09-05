@@ -15,7 +15,6 @@ public class CreateRoleCommandHandler : ICommandHandler<CreateRoleCommand, RoleD
     public async Task<RoleDto> Handle(CreateRoleCommand command, CancellationToken cancellationToken)
     {
         var request = command._request;
-
         var roleId = await _service.AddAsync(request);
         return new RoleDto { Id = roleId };
     }

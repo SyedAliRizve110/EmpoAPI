@@ -40,7 +40,7 @@ public class DepartmentRepository : IDepartmentService
     public async Task<Guid> UpdateDepartment(UpdateDepartmentRequestModel request)
     {
         var departmentEntity = await _dbContext.Department.FindAsync(request.Id);
-        var updated = await UpdateMetaData(departmentEntity, request);
+        var updated = await UpdateData(departmentEntity, request);
         _dbSet.Update(updated);
         await _dbContext.SaveChangesAsync();
         return departmentEntity.Id;
@@ -100,10 +100,8 @@ public class DepartmentRepository : IDepartmentService
             TotalRecords = query.Result.Count()
         }; return Task.FromResult(departmentList);
     }
-    public async Task<DepartmentEntity> UpdateMetaData(DepartmentEntity departmentEntity, UpdateDepartmentRequestModel request)
+    public async Task<DepartmentEntity> UpdateData(DepartmentEntity departmentEntity, UpdateDepartmentRequestModel request)
     {
-        bool isNew = false;
-        departmentEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         departmentEntity.Name = request.Name;
         departmentEntity.Description = request.Description;
         departmentEntity.IsActive = request.IsActive;
@@ -118,7 +116,6 @@ public class DepartmentRepository : IDepartmentService
         foreach (var employee in employees)
         {
             employee.DepartmentId = request.DepartmentId;
-            employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
         _dbContext.SaveChangesAsync();

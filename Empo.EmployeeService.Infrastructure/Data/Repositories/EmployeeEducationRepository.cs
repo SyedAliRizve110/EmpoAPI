@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.EmployeeEducation;
 using Empo.EmployeeService.Application.EmployeeEducation.CreateEmployeeEducation;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
@@ -25,8 +24,6 @@ public class EmployeeEducationRepository : IEmployeeEducationService
         foreach (var education in model.Education)
         {
             var entity = _mapper.Map<EmployeeEducationEntity>(education);
-            bool isNew = true;
-            entity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
             await _dbSet.AddAsync(entity);
         }
         await _dbContext.SaveChangesAsync();
@@ -37,7 +34,7 @@ public class EmployeeEducationRepository : IEmployeeEducationService
     {
         var entity = await _dbContext.Education.AsNoTracking().FirstOrDefaultAsync(e => e.Id == request.Id);
         var _request = _mapper.Map<EmployeeEducationEntity>(request);
-        var updatedEntity = await UpdateMetaData(entity, _request);
+        var updatedEntity = await UpdateData(entity, _request);
         _dbSet.Update(updatedEntity);
         await _dbContext.SaveChangesAsync();
         return entity.Id;
@@ -58,12 +55,10 @@ public class EmployeeEducationRepository : IEmployeeEducationService
         return _mapper.Map<List<EmployeeEducationModel>>(list);
     }
 
-    public async Task<EmployeeEducationEntity> UpdateMetaData(EmployeeEducationEntity entity, EmployeeEducationEntity request)
+    public async Task<EmployeeEducationEntity> UpdateData(EmployeeEducationEntity entity, EmployeeEducationEntity request)
     {
         request.CreatedBy = entity.CreatedBy;
         request.DateCreated = entity.DateCreated;
-        bool isNew = false;
-        entity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 }

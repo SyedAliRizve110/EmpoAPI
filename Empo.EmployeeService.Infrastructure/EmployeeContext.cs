@@ -1,4 +1,5 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Data;
+﻿using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
+using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
@@ -19,6 +20,7 @@ namespace Empo.EmployeeService.Infrastructure;
 
 public class EmployeeContext : DbContext
 {
+    private readonly IUserContextService _userInfoProvider;
     #region Employee
 
     public DbSet<EmployeeEntity> Employee { get; set; }
@@ -48,9 +50,10 @@ public class EmployeeContext : DbContext
     #endregion
 
 
-    public EmployeeContext(DbContextOptions<EmployeeContext> options)
+    public EmployeeContext(DbContextOptions<EmployeeContext> options, IUserContextService userInfoProvider)
     : base(options)
     {
+        _userInfoProvider = userInfoProvider;
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -62,31 +65,31 @@ public class EmployeeContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        //SetChangesInternal();
+        SetChangesInternal();
         var result = await base.SaveChangesAsync(cancellationToken);
         return result;
     }
 
     public override int SaveChanges()
     {
-        // SetChangesInternal();
+        SetChangesInternal();
         var result = base.SaveChanges();
         return result;
     }
 
-    //private void SetChangesInternal()
-    //{
-    //    var listEntriesTenantEntityBase = ChangeTracker.Entries<TenantEntityBase>().ToList();
-    //    if (listEntriesTenantEntityBase.Count > 0)
-    //    {
-    //        SetTenantEntityBase(listEntriesTenantEntityBase);
+    private void SetChangesInternal()
+    {
+        var listEntriesEntityBase = ChangeTracker.Entries<EntityBase>().ToList();
+        if (listEntriesEntityBase.Count > 0)
+        {
+          //  SetTenantEntityBase(listEntriesTenantEntityBase);
 
-    //        var listTEntriesEntityBase = listEntriesTenantEntityBase.Select(
-    //            entry => Entry<EntityBase>(entry.Entity)).ToList();
+            var listTEntriesEntityBase = listEntriesEntityBase.Select(
+                entry => Entry<EntityBase>(entry.Entity)).ToList();
 
-    //        SetEntityBase(listTEntriesEntityBase);
-    //    }
-    //}
+            SetEntityBase(listTEntriesEntityBase);
+        }
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(message => Debug.WriteLine(message));
 
     //public void SetTenantEntityBase(List<EntityEntry<TenantEntityBase>> list)
@@ -107,19 +110,18 @@ public class EmployeeContext : DbContext
     //}
     public void SetEntityBase(List<EntityEntry<EntityBase>> list)
     {
-        // var userId = _userInfoProvider.
-        // var userId = _userInfoProvider.GetUserId();
+        var userId = _userInfoProvider.GetUserId();
         foreach (var entry in list)
         {
             switch (entry.State)
             {
                 case EntityState.Added:
-                    //  entry.Entity.SetDataRecorderMetadata(userId, true);
+                      entry.Entity.SetDataRecorderMetadata(userId, true);
                     break;
                 case EntityState.Modified:
                     entry.Property("DateCreated").IsModified = false;
                     entry.Property("CreatedBy").IsModified = false;
-                    //entry.Entity.SetDataRecorderMetadata(userId, false);
+                    entry.Entity.SetDataRecorderMetadata(userId, false);
                     break;
             }
         }

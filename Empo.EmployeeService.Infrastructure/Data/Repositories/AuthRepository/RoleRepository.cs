@@ -26,8 +26,7 @@ public class RoleRepository : IRoleService
     public async Task<Guid> AddAsync(CreateRoleRequest request)
     {
         var roleEntity = _mapper.Map<RoleEntity>(request);
-        bool isNew = true; roleEntity.IsActive = true;
-        roleEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
+        roleEntity.IsActive = true;
         await _dbContext.AddAsync(roleEntity);
         await _dbContext.SaveChangesAsync();
         return roleEntity.Id;
@@ -113,9 +112,8 @@ public class RoleRepository : IRoleService
     public async Task<Guid> UpdateAsync(UpdateRoleRequest request)
     {
         var roleEntity = await _dbContext.Role.FirstOrDefaultAsync(e => e.Id == request.Id);
-        var _request = _mapper.Map<RoleEntity>(request);
-        var updatedEntity = await UpdateMetaData(roleEntity, _request);
-        _dbContext.Update(updatedEntity);
+        var _entity = _mapper.Map<RoleEntity>(request);
+        _dbContext.Update(_entity);
         await _dbContext.SaveChangesAsync();
         return roleEntity.Id;
     }
@@ -127,13 +125,5 @@ public class RoleRepository : IRoleService
         _dbContext.Role.Update(role);
         await _dbContext.SaveChangesAsync();
         return role.Id;
-    }
-    private async Task<RoleEntity> UpdateMetaData(RoleEntity roleEntity, RoleEntity request)
-    {
-        request.CreatedBy = roleEntity.CreatedBy;
-        request.DateCreated = roleEntity.DateCreated;
-        bool isNew = false;
-        roleEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
-        return request;
     }
 }

@@ -97,6 +97,7 @@ namespace Empo.EmloyeeService.Api
                         ValidAudience = _config["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(key)
                     };
+                    options.MapInboundClaims = false;
                 });
 
             services.AddAuthorization();

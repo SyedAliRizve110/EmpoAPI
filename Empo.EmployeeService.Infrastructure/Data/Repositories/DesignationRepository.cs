@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Designations;
 using Empo.EmployeeService.Application.Designations.AssignDesignation;
 using Empo.EmployeeService.Application.Designations.CreateDesignation;
@@ -25,8 +24,6 @@ public class DesignationRepository : IDesignationService
     public async Task<Guid> AddAsync(CreateDesignationRequest request)
     {
         var designationEntity = _mapper.Map<DesignationEntity>(request);
-        bool isNew = true;
-        designationEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(designationEntity);
         await _dbContext.SaveChangesAsync();
         return designationEntity.Id;
@@ -65,15 +62,13 @@ public class DesignationRepository : IDesignationService
     public async Task<Guid> UpdateAsync(DesignationModel model)
     {
         var designationEntity = await _dbContext.Designation.FindAsync(model.Id);
-        var updated = await UpdateMetaData(designationEntity, model);
+        var updated = await UpdateData(designationEntity, model);
         _dbSet.Update(updated);
         await _dbContext.SaveChangesAsync();
         return designationEntity.Id;
     }
-    public async Task<DesignationEntity> UpdateMetaData(DesignationEntity designationEntity, DesignationModel model)
+    public async Task<DesignationEntity> UpdateData(DesignationEntity designationEntity, DesignationModel model)
     {
-        bool isNew = false;
-        designationEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         designationEntity.Name = model.Name;
         designationEntity.Description = model.Description;
         designationEntity.IsActive = model.IsActive;

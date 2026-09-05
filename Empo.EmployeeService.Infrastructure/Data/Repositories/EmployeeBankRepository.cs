@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.EmployeeBank;
 using Empo.EmployeeService.Application.EmployeeBank.Create;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
@@ -23,8 +22,6 @@ public class EmployeeBankRepository : IEmployeeBankService
     public async Task<Guid> AddEmployeeBank(CreateEmployeeBankRequest request)
     {
         var bankEntity = _mapper.Map<EmployeeBankEntity>(request);
-        bool isNew = true;
-        bankEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbSet.AddAsync(bankEntity);
         await _dbContext.SaveChangesAsync();
         return bankEntity.Id;
@@ -34,7 +31,7 @@ public class EmployeeBankRepository : IEmployeeBankService
     {
         var bankEntity = await _dbContext.EmployeeBank.AsNoTracking().FirstOrDefaultAsync(b => b.Id == request.Id);
         var _request = _mapper.Map<EmployeeBankEntity>(request);
-        var updatedEntity = await UpdateMetaData(bankEntity, _request);
+        var updatedEntity = await UpdateData(bankEntity, _request);
         _dbSet.Update(updatedEntity);
         await _dbContext.SaveChangesAsync();
         return bankEntity.Id;
@@ -60,12 +57,10 @@ public class EmployeeBankRepository : IEmployeeBankService
         return bankModel;
     }
 
-    public async Task<EmployeeBankEntity> UpdateMetaData(EmployeeBankEntity bankEntity, EmployeeBankEntity request)
+    public async Task<EmployeeBankEntity> UpdateData(EmployeeBankEntity bankEntity, EmployeeBankEntity request)
     {
         request.CreatedBy = bankEntity.CreatedBy;
         request.DateCreated = bankEntity.DateCreated;
-        bool isNew = false;
-        bankEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 }

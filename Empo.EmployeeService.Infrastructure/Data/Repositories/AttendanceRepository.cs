@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Empo.BuildingBlocks.Application.SharedModels;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Attendence;
 using Empo.EmployeeService.Application.Attendence.ActiveEmployeesList;
 using Empo.EmployeeService.Application.Attendence.AttendenceList;
@@ -55,8 +54,6 @@ public class AttendanceRepository : IAttendanceService
     public async Task<Guid> ClockOut(EmployeeAttendanceModel model)
     {
         var attendanceEntity = _mapper.Map<EmployeeAttendanceEntity>(model);
-        bool isNew = false;
-        attendanceEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         _dbSet.Update(attendanceEntity);
         await _dbContext.SaveChangesAsync();
         return attendanceEntity.Id;

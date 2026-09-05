@@ -1,4 +1,5 @@
-﻿using Empo.EmloyeeService.Api.Authorization;
+﻿using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
+using Empo.EmloyeeService.Api.Authorization;
 using Empo.EmployeeService.Api.Jwt;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
@@ -26,12 +27,15 @@ public static class DependencyInjection
         IConfiguration configuration
         )
     {
+        //services
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddScoped<PasswordHasher<UserEntity>>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IUserContextService, UserContextService>();
 
+        //repo
         services.AddScoped<IEmployeeService, EmployeeRepository>();
         services.AddScoped<IAttendanceService, AttendanceRepository>();
         services.AddScoped<IDepartmentService, DepartmentRepository>();

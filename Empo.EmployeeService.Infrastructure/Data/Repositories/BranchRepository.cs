@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.Branch;
 using Empo.EmployeeService.Application.Branch.AssignBranchEmployee;
 using Empo.EmployeeService.Application.Branch.AssignBranchManager;
@@ -29,8 +28,7 @@ public class BranchRepository : IBranchService
     public async Task<Guid> CreateBranchAsync(CreateBranchRequest request)
     {
         var branchEntity = _mapper.Map<BranchEntity>(request);
-        bool isNew = true; branchEntity.IsActive = true;
-        branchEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
+        branchEntity.IsActive = true;
         await _dbSet.AddAsync(branchEntity);
         await _dbContext.SaveChangesAsync();
         return branchEntity.Id;
@@ -107,10 +105,9 @@ public class BranchRepository : IBranchService
         foreach (var employee in employees)
         {
             employee.BranchId = request.BranchId;
-            employee.SetDataRecorderMetadata(Constants.AdminUserId, false);
             _dbContext.Employee.Update(employee);
         }
-         await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         return request.BranchId;
     }
 
@@ -118,8 +115,6 @@ public class BranchRepository : IBranchService
     {
         request.CreatedBy = branchEntity.CreatedBy;
         request.DateCreated = branchEntity.DateCreated;
-        bool isNew = false;
-        branchEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         return request;
     }
 

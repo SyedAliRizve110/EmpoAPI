@@ -26,9 +26,10 @@ public class JwtService : IJwtService
         var user = _mapper.Map<UserEntity>(_user);
         var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub,
-            user.Id.ToString()),
-
+            new Claim(
+                JwtRegisteredClaimNames.Sub,
+                user.Id.ToString()
+                ),
             new Claim(
                 ClaimTypes.NameIdentifier,
                 user.Id.ToString()
@@ -46,7 +47,7 @@ public class JwtService : IJwtService
                 user.Role.Name
                 ),
             new Claim(
-                ClaimTypes.NameIdentifier,
+                ClaimTypes.Name,
                 user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti,
             Guid.NewGuid().ToString())

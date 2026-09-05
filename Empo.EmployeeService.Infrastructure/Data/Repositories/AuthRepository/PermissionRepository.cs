@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Empo.BuildingBlocks.Infrastructure.Data;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
 using Empo.EmployeeService.Application.AuthService.Permission.CreatePermission;
 using Empo.EmployeeService.Application.AuthService.Permission.PermissionList;
@@ -22,8 +21,6 @@ public class PermissionRepository : IPermissionService
     public async Task<Guid> AddAsync(CreatePermissionRequest request)
     {
         var permissionEntity = _mapper.Map<PermissionEntity>(request);
-        bool isNew = true;
-        permissionEntity.SetDataRecorderMetadata(Constants.AdminUserId, isNew);
         await _dbcontext.Permission.AddAsync(permissionEntity);
         await _dbcontext.SaveChangesAsync();
         return permissionEntity.Id;
