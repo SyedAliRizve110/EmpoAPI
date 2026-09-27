@@ -11,6 +11,7 @@ using Empo.EmployeeService.Application.EmployeeEducation;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.EmployeeWorkHistory;
 using Empo.EmployeeService.Application.Interface;
+using Empo.EmployeeService.Application.Media;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Repositories;
 using Empo.EmployeeService.Infrastructure.Data.Repositories.AuthRepository;
@@ -34,6 +35,8 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IUserContextService, UserContextService>();
+        services.AddScoped<IFileStorageService, LocalFileStorageService>();
+        services.AddScoped<IMediaService, MediaService>();
 
         //repo
         services.AddScoped<IEmployeeService, EmployeeRepository>();

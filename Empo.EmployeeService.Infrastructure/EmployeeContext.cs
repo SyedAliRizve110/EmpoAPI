@@ -7,6 +7,7 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Media;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 using Empo.EmployeeService.Infrastructure.Database;
@@ -49,6 +50,12 @@ public class EmployeeContext : DbContext
 
     #endregion
 
+    #region
+    public DbSet<PostMediaEntity> PostMedia { get; set; }
+    public DbSet<PostEntity> Post { get; set; }
+    public DbSet<PostLikeEntity> PostLike { get; set; }
+    public DbSet<PostCommentEntity> PostComment { get; set; }
+    #endregion
 
     public EmployeeContext(DbContextOptions<EmployeeContext> options, IUserContextService userInfoProvider)
     : base(options)

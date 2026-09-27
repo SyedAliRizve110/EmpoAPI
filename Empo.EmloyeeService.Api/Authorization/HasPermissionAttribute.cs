@@ -96,4 +96,13 @@ public static class Permissions
     public const string EmployeeEducationUpdate = "EmployeeEducation.Update";
     public const string EmployeeEducationGet = "EmployeeEducation.Get";
     #endregion
+
+    #region
+    public const string PostCreate = "Post.Create";
+    public const string PostView = "Post.View";
+    public const string PostModerate = "Post.Moderate";
+    public const string PostLike = "Post.Like";
+    public const string PostComment = "Post.Comment";
+    public const string PostDelete = "Post.Delete";
+    #endregion
 }

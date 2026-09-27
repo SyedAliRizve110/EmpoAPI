@@ -1,5 +1,4 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
-using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
+﻿using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
