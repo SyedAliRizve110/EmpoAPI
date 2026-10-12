@@ -5,8 +5,10 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Document;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Leave;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Media;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
@@ -34,6 +36,7 @@ public class EmployeeContext : DbContext
     public DbSet<EmployeeBankEntity> EmployeeBank { get; set; }
     public DbSet<EmployeeEducationEntity> Education { get; set; }
     public DbSet<EmployeeWorkHistoryEntity> WorkHistory { get; set; }
+    public DbSet<EmployeeDocumentEntity> EmployeeDocument { get; set; }
 
     #endregion
 
@@ -50,11 +53,18 @@ public class EmployeeContext : DbContext
 
     #endregion
 
-    #region
+    #region Media
     public DbSet<PostMediaEntity> PostMedia { get; set; }
     public DbSet<PostEntity> Post { get; set; }
     public DbSet<PostLikeEntity> PostLike { get; set; }
     public DbSet<PostCommentEntity> PostComment { get; set; }
+    #endregion
+
+    #region Leave
+    public DbSet<LeaveTypeEntity> LeaveType { get; set; }
+    public DbSet<EmployeeLeaveBalanceEntity> EmployeeLeaveBalance { get; set; }
+    public DbSet<LeaveRequestEntity> LeaveRequest { get; set; }
+    public DbSet<HolidayEntity> Holiday { get; set; }
     #endregion
 
     public EmployeeContext(DbContextOptions<EmployeeContext> options, IUserContextService userInfoProvider)
@@ -89,7 +99,7 @@ public class EmployeeContext : DbContext
         var listEntriesEntityBase = ChangeTracker.Entries<EntityBase>().ToList();
         if (listEntriesEntityBase.Count > 0)
         {
-          //  SetTenantEntityBase(listEntriesTenantEntityBase);
+            //  SetTenantEntityBase(listEntriesTenantEntityBase);
 
             var listTEntriesEntityBase = listEntriesEntityBase.Select(
                 entry => Entry<EntityBase>(entry.Entity)).ToList();
@@ -123,7 +133,7 @@ public class EmployeeContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                      entry.Entity.SetDataRecorderMetadata(userId, true);
+                    entry.Entity.SetDataRecorderMetadata(userId, true);
                     break;
                 case EntityState.Modified:
                     entry.Property("DateCreated").IsModified = false;

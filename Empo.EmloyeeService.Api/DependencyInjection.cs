@@ -7,6 +7,7 @@ using Empo.EmployeeService.Application.Branch.ServiceInterface;
 using Empo.EmployeeService.Application.Department.ServiceInterface;
 using Empo.EmployeeService.Application.Designations.ServiceInterface;
 using Empo.EmployeeService.Application.EmployeeBank;
+using Empo.EmployeeService.Application.EmployeeDocument;
 using Empo.EmployeeService.Application.EmployeeEducation;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.EmployeeWorkHistory;
@@ -50,7 +51,7 @@ public static class DependencyInjection
         services.AddScoped<IEmployeeBankService, EmployeeBankRepository>();
         services.AddScoped<IEmployeeWorkHistoryService, EmployeeWorkHistoryRepository>();
         services.AddScoped<IEmployeeEducationService, EmployeeEducationRepository>();
-
+        services.AddScoped<IEmployeeDocumentService, EmployeeDocumentService>();
         return services;
     }
 }
