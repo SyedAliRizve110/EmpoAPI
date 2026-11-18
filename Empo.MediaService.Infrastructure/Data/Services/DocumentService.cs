@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Empo.MediaService.Infrastructure.Data.Services;
 
-public class EmployeeDocumentService : IEmployeeDocumentService
+public class DocumentService : IEmployeeDocumentService
 {
     private readonly MediaContext _dbContext;
     private readonly IFileStorageService _storage;
@@ -22,7 +22,7 @@ public class EmployeeDocumentService : IEmployeeDocumentService
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     };
-    public EmployeeDocumentService(MediaContext dbContext, IFileStorageService storage)
+    public DocumentService(MediaContext dbContext, IFileStorageService storage)
     {
         _dbContext = dbContext;
         _storage = storage;
