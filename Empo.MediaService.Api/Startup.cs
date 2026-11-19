@@ -1,7 +1,9 @@
-﻿using Empo.MediaService.Api;
-using Microsoft.IdentityModel.Tokens;
+﻿using Empo.MediaService.Infrastructure;
+using Empo.MediaService.Infrastructure.Data.Mappers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text;
+using Serilog;
+using Serilog.Formatting.Compact;
 using ILogger = Serilog.ILogger;
 
 namespace Empo.MediaService.Api
@@ -14,7 +16,7 @@ namespace Empo.MediaService.Api
 
         public Startup(IWebHostEnvironment env)
         {
-           // _logger = ConfigureLogger();
+            _logger = ConfigureLogger();
             _logger.Information("<logger Configured");
 
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -34,10 +36,10 @@ namespace Empo.MediaService.Api
             services.AddHttpContextAccessor();
             //services.AddControllers(options =>
             // options.Filters.Add<HttpResponseAxceptionFilter>());
-          //  services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Empo.EmployeeService.Application.AssemblyReference).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Empo.MediaService.Application.AssemblyReference).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
             services.AddAutoMapper(config => { /* configuration */}, typeof(Program).Assembly);
-          //  services.AddAutoMapper(config => { /* configuration */}, typeof(EmployeeMapper));
+            services.AddAutoMapper(config => { /* configuration */}, typeof(MediaMapper));
             services.AddControllers();
             services.AddMemoryCache();
             services.AddCors(options =>
@@ -97,17 +99,17 @@ namespace Empo.MediaService.Api
             services.AddAuthorization();
 
             // var assemblyName = this.GetAssemblyName();
-           // var assemblyName = typeof(EmployeeContext).Assembly.GetName().Name;
+            var assemblyName = typeof(MediaContext).Assembly.GetName().Name;
 
-            //services.AddDbContext<EmployeeContext>(options =>
-            //{
-            //    options.UseNpgsql(this.GetConnectionString(),
-            //        sql =>
-            //        {
-            //            sql.MigrationsAssembly(assemblyName);
-            //        });
-            //});
-           // services.AddInfrastructureServices(_config);
+            services.AddDbContext<MediaContext>(options =>
+            {
+                options.UseNpgsql(this.GetConnectionString(),
+                    sql =>
+                    {
+                        sql.MigrationsAssembly(assemblyName);
+                    });
+            });
+            services.AddInfrastructureServices(_config);
 
             services.AddHttpContextAccessor();
             var serviceProvider = services.BuildServiceProvider();
@@ -128,9 +130,9 @@ namespace Empo.MediaService.Api
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           // app.UseGlobalExceptionHandling();
+            // app.UseGlobalExceptionHandling();
             app.UseHttpsRedirection();
-           // app.InitializeDataBase();
+            app.InitializeDataBase();
             // app.UseDeveloperExceptionPage();
 
             app.UseRouting();
@@ -149,14 +151,14 @@ namespace Empo.MediaService.Api
             });
         }
 
-        //private static ILogger ConfigureLogger()
-        //{
-        //    return new LoggerConfiguration()
-        //        .Enrich.FromLogContext()
-        //        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Context}] {Message:lj}{NewLine}{Exception}")
-        //        .WriteTo.File(new CompactJsonFormatter(), "logs/logs")
-        //        .CreateLogger();
-        //}
+        private static ILogger ConfigureLogger()
+        {
+            return new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Context}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.File(new CompactJsonFormatter(), "logs/logs")
+                .CreateLogger();
+        }
 
         public string GetConnectionString()
         {
