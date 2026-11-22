@@ -506,6 +506,194 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.EmployeeLeaveBalanceEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CarriedForward")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LeaveTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalAllocated")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Used")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("EmployeeLeaveBalance", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.HolidayEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsOptional")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.ToTable("Holiday", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveRequestEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ApprovedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LeaveTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("NumberOfDays")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("LeaveRequest", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("CarryForwardAllowed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DefaultDaysPerYear")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MaxCarryForwardDays")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("RequiresApproval")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaveType", "employee");
+                });
+
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1001,6 +1189,53 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.EmployeeLeaveBalanceEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", "LeaveType")
+                        .WithMany("EmployeeLeaveBalances")
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("LeaveType");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.HolidayEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Branch.BranchEntity", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveRequestEntity", b =>
+                {
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("LeaveType");
+                });
+
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RefreshTokenEntity", b =>
                 {
                     b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", "User")
@@ -1105,6 +1340,11 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("WorkHistory");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", b =>
+                {
+                    b.Navigation("EmployeeLeaveBalances");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>

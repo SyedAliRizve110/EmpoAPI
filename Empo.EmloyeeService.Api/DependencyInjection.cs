@@ -47,7 +47,6 @@ public static class DependencyInjection
         services.AddScoped<IEmployeeBankService, EmployeeBankRepository>();
         services.AddScoped<IEmployeeWorkHistoryService, EmployeeWorkHistoryRepository>();
         services.AddScoped<IEmployeeEducationService, EmployeeEducationRepository>();
-
         return services;
     }
 }
