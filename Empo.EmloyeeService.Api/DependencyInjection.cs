@@ -1,5 +1,5 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
-using Empo.EmloyeeService.Api.Authorization;
+using Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
+using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
 using Empo.EmployeeService.Api.Jwt;
 using Empo.EmployeeService.Application.Attendence.ServiceInterface;
 using Empo.EmployeeService.Application.AuthService.Intrfaces;
@@ -15,7 +15,6 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Repositories;
 using Empo.EmployeeService.Infrastructure.Data.Repositories.AuthRepository;
 using Empo.EmployeeService.Infrastructure.Data.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Empo.EmloyeeService.Api;
@@ -27,15 +26,16 @@ public static class DependencyInjection
         IConfiguration configuration
         )
     {
-        //services
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        // Permission Authorization from BuildingBlocks
+        services.AddPermissionAuthorization();
+
+        // services
         services.AddScoped<PasswordHasher<UserEntity>>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IUserContextService, UserContextService>();
 
-        //repo
+        // repo
         services.AddScoped<IEmployeeService, EmployeeRepository>();
         services.AddScoped<IAttendanceService, AttendanceRepository>();
         services.AddScoped<IDepartmentService, DepartmentRepository>();

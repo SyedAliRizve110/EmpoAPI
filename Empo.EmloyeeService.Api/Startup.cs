@@ -1,4 +1,5 @@
-﻿using Empo.EmployeeService.Api;
+using Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
+using Empo.EmployeeService.Api;
 using Empo.EmployeeService.Infrastructure;
 using Empo.EmployeeService.Infrastructure.Data.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -83,26 +84,9 @@ namespace Empo.EmloyeeService.Api
                 });
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = _config["Jwt:Issuer"],
-                        ValidAudience = _config["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(key)
-                    };
-                    options.MapInboundClaims = false;
-                });
+            // ── Shared JWT validation from BuildingBlocks ─────────────────────────
+            services.AddSharedJwtAuth(_config);
 
-            services.AddAuthorization();
-
-            // var assemblyName = this.GetAssemblyName();
             var assemblyName = typeof(EmployeeContext).Assembly.GetName().Name;
 
             services.AddDbContext<EmployeeContext>(options =>
@@ -114,22 +98,6 @@ namespace Empo.EmloyeeService.Api
                     });
             });
             services.AddInfrastructureServices(_config);
-
-            services.AddHttpContextAccessor();
-            var serviceProvider = services.BuildServiceProvider();
-
-            // IExecutionContextAccessor executionContextAcessor = new ExecutionContextAccessor(serviceProvider.GetService<HttpContextAccessor>());
-
-            //return ApplicationStartup.Initialize(
-            //    services,
-            //    this.GetConnectionString(),
-            //    //  cacheStore,
-            //    serviceProvider,
-            //    //  emailSender,
-            //    // emailsSettings,
-            //    _logger,
-            //     executionContextAcessor
-            //);
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

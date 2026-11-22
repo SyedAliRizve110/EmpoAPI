@@ -1,4 +1,6 @@
-﻿using Empo.MediaService.Application.Media.AddComment;
+using Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
+using Empo.MediaService.Api.Authorization;
+using Empo.MediaService.Application.Media.AddComment;
 using Empo.MediaService.Application.Media.CreatePost;
 using Empo.MediaService.Application.Media.DeletePost;
 using Empo.MediaService.Application.Media.GetComment;
@@ -14,26 +16,28 @@ namespace Empo.MediaService.Api.Controllers;
 
 [Route("api/post")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class MediaController : Controller
 {
     private readonly IMediator _mediator;
+
     public MediaController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
-    //private Guid CurrentUserId =>
-        //Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
-    //private bool IsModerator =>
-    //    User.Claims.Any(c => c.Type == "permission" && c.Value == Permissions.PostModerate);
+    private Guid CurrentUserId =>
+        Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? User.FindFirstValue("sub")
+            ?? throw new UnauthorizedAccessException("User identity not found in token."));
 
-    Guid CurrentUserId = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5");
+    private bool IsModerator =>
+        User.Claims.Any(c => c.Type == "permission" && c.Value == MediaPermissions.PostModerate);
 
     [Route("")]
     [HttpPost]
     [Consumes("multipart/form-data")]
-    //[HasPermission(Permissions.PostCreate)]
+    [HasPermission(MediaPermissions.PostCreate)]
     [ProducesResponseType(typeof(PostMediaModel), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> CreatePost([FromForm] CreatePostRequest request)
     {
@@ -43,7 +47,7 @@ public class MediaController : Controller
 
     [Route("feed")]
     [HttpGet]
-   // [HasPermission(Permissions.PostView)]
+    [HasPermission(MediaPermissions.PostView)]
     [ProducesResponseType(typeof(GetFeedResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetFeed([FromQuery] GetFeedRequest request)
     {
@@ -53,7 +57,7 @@ public class MediaController : Controller
 
     [Route("{postId}/like")]
     [HttpPost]
-   // [HasPermission(Permissions.PostLike)]
+    [HasPermission(MediaPermissions.PostLike)]
     public async Task<IActionResult> ToggleLike([FromRoute] Guid postId)
     {
         var liked = await _mediator.Send(LikeCommand.Create(postId, CurrentUserId));
@@ -62,7 +66,7 @@ public class MediaController : Controller
 
     [Route("{postId}/comment")]
     [HttpPost]
-   // [HasPermission(Permissions.PostComment)]
+    [HasPermission(MediaPermissions.PostComment)]
     [ProducesResponseType(typeof(CommentModel), (int)HttpStatusCode.Created)]
     public async Task<IActionResult> AddComment([FromRoute] Guid postId, [FromBody] CreateCommentRequest request)
     {
@@ -72,7 +76,7 @@ public class MediaController : Controller
 
     [Route("{postId}/comments")]
     [HttpGet]
-   // [HasPermission(Permissions.PostView)]
+    [HasPermission(MediaPermissions.PostView)]
     [ProducesResponseType(typeof(List<CommentModel>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetComments([FromRoute] Guid postId)
     {
@@ -82,10 +86,10 @@ public class MediaController : Controller
 
     [Route("{postId}")]
     [HttpDelete]
-   // [HasPermission(Permissions.PostDelete)]
+    [HasPermission(MediaPermissions.PostDelete)]
     public async Task<IActionResult> DeletePost([FromRoute] Guid postId)
     {
-        await _mediator.Send(DeletePostCommand.Create(postId, CurrentUserId, true)); //IsModerator));
+        await _mediator.Send(DeletePostCommand.Create(postId, CurrentUserId, IsModerator));
         return NoContent();
     }
 }

@@ -35,6 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="Empo.BuildingBlocks.Infrastructure.Configuration.Auth" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Empo.BuildingBlocks.Application\Empo.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Empo.BuildingBlocks.Infrastructure\Empo.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Application\Empo.EmployeeService.Application.csproj" />
     <ProjectReference Include="..\Empo.EmployeeService.Infrastructure\Empo.EmployeeService.Infrastructure.csproj" />
   </ItemGroup>

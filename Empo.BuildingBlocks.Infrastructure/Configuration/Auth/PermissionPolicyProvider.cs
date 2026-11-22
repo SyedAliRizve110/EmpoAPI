@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace Empo.EmloyeeService.Api.Authorization;
+namespace Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
 
-// Any [Authorize(Policy = "Permission:Employee.Create")] policy is generated on the fly —
-// you never need to register each permission policy by hand in Program.cs.
+/// <summary>
+/// Automatically builds an authorization policy dynamically for any "Permission:{name}" requirement.
+/// No need to register individual permission policies in Program.cs.
+/// </summary>
 public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
     public const string PolicyPrefix = "Permission:";
@@ -21,7 +23,7 @@ public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 
     public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
-        if (policyName.StartsWith(PolicyPrefix))
+        if (policyName.StartsWith(PolicyPrefix, StringComparison.OrdinalIgnoreCase))
         {
             var permission = policyName.Substring(PolicyPrefix.Length);
             var policy = new AuthorizationPolicyBuilder();

@@ -1,4 +1,5 @@
-﻿using Empo.MediaService.Infrastructure;
+using Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
+using Empo.MediaService.Infrastructure;
 using Empo.MediaService.Infrastructure.Data.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -11,7 +12,6 @@ namespace Empo.MediaService.Api
     public class Startup
     {
         private readonly IConfiguration _config;
-        private readonly string ConnectionString = "ConnectionStrings";
         private static ILogger _logger;
 
         public Startup(IWebHostEnvironment env)
@@ -34,8 +34,6 @@ namespace Empo.MediaService.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            //services.AddControllers(options =>
-            // options.Filters.Add<HttpResponseAxceptionFilter>());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Empo.MediaService.Application.AssemblyReference).Assembly));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
             services.AddAutoMapper(config => { /* configuration */}, typeof(Program).Assembly);
@@ -47,8 +45,8 @@ namespace Empo.MediaService.Api
                 options.AddPolicy("MyCustomPolicy", policy =>
                 {
                     policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
                 });
             });
             services.AddSwaggerGen(options =>
@@ -79,26 +77,12 @@ namespace Empo.MediaService.Api
                 });
             });
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = _config["Jwt:Issuer"],
-            //            ValidAudience = _config["Jwt:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(key)
-            //        };
-            //        options.MapInboundClaims = false;
-            //    });
+            // ── Shared JWT validation & Permissions ─────────────────────────
+            // Validates tokens issued by EmployeeService using the same Jwt:Key.
+            // Evaluates [HasPermission(...)] by reading claims in the token (no DB needed).
+            services.AddSharedJwtAuth(_config);
+            services.AddPermissionAuthorization();
 
-            services.AddAuthorization();
-
-            // var assemblyName = this.GetAssemblyName();
             var assemblyName = typeof(MediaContext).Assembly.GetName().Name;
 
             services.AddDbContext<MediaContext>(options =>
@@ -109,31 +93,26 @@ namespace Empo.MediaService.Api
                         sql.MigrationsAssembly(assemblyName);
                     });
             });
+
             services.AddInfrastructureServices(_config);
-
-            services.AddHttpContextAccessor();
-            var serviceProvider = services.BuildServiceProvider();
-
-            // IExecutionContextAccessor executionContextAcessor = new ExecutionContextAccessor(serviceProvider.GetService<HttpContextAccessor>());
-
-            //return ApplicationStartup.Initialize(
-            //    services,
-            //    this.GetConnectionString(),
-            //    //  cacheStore,
-            //    serviceProvider,
-            //    //  emailSender,
-            //    // emailsSettings,
-            //    _logger,
-            //     executionContextAcessor
-            //);
-
         }
+        // IExecutionContextAccessor executionContextAcessor = new ExecutionContextAccessor(serviceProvider.GetService<HttpContextAccessor>());
+
+        //return ApplicationStartup.Initialize(
+        //    services,
+        //    this.GetConnectionString(),
+        //    //  cacheStore,
+        //    serviceProvider,
+        //    //  emailSender,
+        //    // emailsSettings,
+        //    _logger,
+        //     executionContextAcessor
+        //);
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // app.UseGlobalExceptionHandling();
+            app.UseGlobalExceptionHandling();
             app.UseHttpsRedirection();
             app.InitializeDataBase();
-            // app.UseDeveloperExceptionPage();
 
             app.UseRouting();
             app.UseCors("MyCustomPolicy");
@@ -146,7 +125,6 @@ namespace Empo.MediaService.Api
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                // The version string 'v1' here must match your AddSwaggerGen version exactly
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
         }

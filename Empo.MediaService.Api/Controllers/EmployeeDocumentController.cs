@@ -1,4 +1,6 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
+﻿using Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
+using Empo.BuildingBlocks.Infrastructure.Configuration.ExceptionModel;
+using Empo.MediaService.Api.Authorization;
 using Empo.MediaService.Application.EmployeeDocument.DeleteDocument;
 using Empo.MediaService.Application.EmployeeDocument.DownloadDocument;
 using Empo.MediaService.Application.EmployeeDocument.GetDocument;
@@ -13,7 +15,7 @@ namespace Empo.MediaService.Api.Controllers;
 
 [Route("api/employee/{employeeId}/document")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class EmployeeDocumentController : Controller
 {
     private readonly IMediator _mediator;
@@ -22,35 +24,43 @@ public class EmployeeDocumentController : Controller
         _mediator = mediator;
     }
 
-    //private Guid CurrentUserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
-    Guid CurrentUserId = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5");
+    private Guid CurrentUserId =>
+        Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? User.FindFirstValue("sub")
+            ?? throw new UnauthorizedAccessException("User identity not found in token."));
 
-    private Guid OwnEmployeeId => Guid.Parse(User.FindFirstValue("EmployeeId")!);
+    private Guid? OwnEmployeeId
+    {
+        get
+        {
+            var val = User.FindFirstValue("EmployeeId");
+            return Guid.TryParse(val, out var id) ? id : null;
+        }
+    }
 
-    //private bool CanAccessEmployee(Guid employeeId) =>
-    //employeeId == OwnEmployeeId ||
-    //User.Claims.Any(c => c.Type == "permission" && c.Value == Permissions.EmployeeDocumentManageAny);
+    private bool CanAccessEmployee(Guid employeeId) =>
+        (OwnEmployeeId.HasValue && employeeId == OwnEmployeeId.Value) ||
+        User.Claims.Any(c => c.Type == "permission" && c.Value == MediaPermissions.EmployeeDocumentManageAny);
 
     [Route("")]
     [HttpPost]
-   // [HasPermission(Permissions.EmployeeDocumentUpload)]
+    [HasPermission(MediaPermissions.EmployeeDocumentUpload)]
     public async Task<IActionResult> Upload([FromRoute] Guid employeeId, [FromForm] UploadEmployeeDocumentRequest request)
     {
-        //if (!CanAccessEmployee(employeeId))
-        // throw new ForbiddenException("You can only upload documents for your own employee record.");
+        if (!CanAccessEmployee(employeeId))
+            throw new ForbiddenException("You can only upload documents for your own employee record.");
 
         var dto = await _mediator.Send(UploadEmployeeDocumentCommand.Create(request, employeeId, CurrentUserId));
-                                                                                                 
         return Ok(dto);
     }
 
     [Route("")]
     [HttpGet]
-   // [HasPermission(Permissions.EmployeeDocumentGet)]
+    [HasPermission(MediaPermissions.EmployeeDocumentGet)]
     public async Task<IActionResult> List([FromRoute] Guid employeeId)
     {
-      //  if (!CanAccessEmployee(employeeId))
-         //   throw new ForbiddenException("You can only view your own documents.");
+        if (!CanAccessEmployee(employeeId))
+            throw new ForbiddenException("You can only view your own documents.");
 
         var dto = await _mediator.Send(DocumentListQuery.Create(employeeId));
         return Ok(dto);
@@ -58,11 +68,11 @@ public class EmployeeDocumentController : Controller
 
     [Route("{documentId}/download")]
     [HttpGet]
-   // [HasPermission(Permissions.EmployeeDocumentGet)]
+    [HasPermission(MediaPermissions.EmployeeDocumentGet)]
     public async Task<IActionResult> Download([FromRoute] Guid employeeId, [FromRoute] Guid documentId)
     {
-       // if (!CanAccessEmployee(employeeId))
-           // throw new ForbiddenException("You can only download your own documents.");
+        if (!CanAccessEmployee(employeeId))
+            throw new ForbiddenException("You can only download your own documents.");
 
         var file = await _mediator.Send(DownloadEmployeeDocumentQuery.Create(employeeId, documentId));
         return File(file.Stream, file.Contentype, file.FileName);
@@ -70,11 +80,11 @@ public class EmployeeDocumentController : Controller
 
     [Route("{documentId}")]
     [HttpDelete]
-   // [HasPermission(Permissions.EmployeeDocumentDelete)]
+    [HasPermission(MediaPermissions.EmployeeDocumentDelete)]
     public async Task<IActionResult> Delete([FromRoute] Guid employeeId, [FromRoute] Guid documentId)
     {
-       // if (!CanAccessEmployee(employeeId))
-         //   throw new ForbiddenException("You can only delete your own documents.");
+        if (!CanAccessEmployee(employeeId))
+            throw new ForbiddenException("You can only delete your own documents.");
 
         await _mediator.Send(DeleteEmployeeDocumentCommand.Create(employeeId, documentId));
         return NoContent();
@@ -82,7 +92,7 @@ public class EmployeeDocumentController : Controller
 
     [Route("{documentId}/verify")]
     [HttpPost]
-    //[HasPermission(Permissions.EmployeeDocumentManageAny)]
+    [HasPermission(MediaPermissions.EmployeeDocumentManageAny)]
     public async Task<IActionResult> Verify([FromRoute] Guid employeeId, [FromRoute] Guid documentId)
     {
         var dto = await _mediator.Send(VerifyEmployeeDocumentCommand.Create(employeeId, documentId, CurrentUserId));

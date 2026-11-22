@@ -1,17 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
 namespace Empo.EmloyeeService.Api.Authorization;
 
-// Usage: [HasPermission(Permissions.EmployeeCreate)]
-public class HasPermissionAttribute : AuthorizeAttribute
-{
-    public HasPermissionAttribute(string permission) : base(policy: PermissionPolicyProvider.PolicyPrefix + permission)
-    {
-
-    }
-}
-
-//cemtral list of every permission string in the system.
+// Central list of every permission string in the system.
 public static class Permissions
 {
     #region Employee
@@ -26,7 +15,6 @@ public static class Permissions
     public const string AttendenceClockOut = "Attendence.ClockOut";
     public const string AttendenceList = "Attendence.List";
     public const string AttendenceActive = "Attendence.Active-Employee";
-
     #endregion
 
     #region Branch
@@ -37,7 +25,6 @@ public static class Permissions
     public const string BranchEmployeeList = "Branch.Employee-List";
     public const string BranchAssignEmoloyee = "Branch.Assign-Employee";
     public const string BranchAssignManager = "Branch.Assign-Manager";
-
     #endregion
 
     #region Department
@@ -48,7 +35,6 @@ public static class Permissions
     public const string DepartmentEmployeeList = "Department.Employee-List";
     public const string DepartmentAssignEmoloyee = "Department.Assign-Employee";
     public const string DepartmentAssignManager = "Department.Assign-Manager";
-
     #endregion
 
     #region Designation
@@ -58,13 +44,11 @@ public static class Permissions
     public const string DesignationList = "Designation.List";
     public const string DesignationEmployeeList = "Designation.Employee-List";
     public const string DesignationAssignDesignation = "Designation.Assign-Designation";
-
     #endregion
 
     #region Permission
     public const string PermissionCreate = "Permission.Create";
     public const string PermissionList = "Permission.List";
-
     #endregion
 
     #region Role
@@ -76,7 +60,6 @@ public static class Permissions
     public const string AssignPermission = "Role.Assign-Permission";
     public const string RevokePermission = "Role.Revoke-Permission";
     public const string AssignUser = "Role.Assign-User";
-
     #endregion
 
     #region EmployeeBankDetails
@@ -97,22 +80,21 @@ public static class Permissions
     public const string EmployeeEducationGet = "EmployeeEducation.Get";
     #endregion
 
-    //#region Media Post
-    //public const string PostCreate = "Post.Create";
-    //public const string PostView = "Post.View";
-    //public const string PostModerate = "Post.Moderate";
-    //public const string PostLike = "Post.Like";
-    //public const string PostComment = "Post.Comment";
-    //public const string PostDelete = "Post.Delete";
-    //#endregion
+    #region Media Post
+    public const string PostCreate = "Post.Create";
+    public const string PostView = "Post.View";
+    public const string PostModerate = "Post.Moderate";
+    public const string PostLike = "Post.Like";
+    public const string PostComment = "Post.Comment";
+    public const string PostDelete = "Post.Delete";
+    #endregion
 
-    //#region Document
-    //public const string EmployeeDocumentManageAny = "Document.Manage";
-    //public const string EmployeeDocumentUpload = "Document.Upload";
-    //public const string EmployeeDocumentGet = "Document.Get";
-    //public const string EmployeeDocumentDelete = "Document.Delete";
-
-    //#endregion
+    #region Document
+    public const string EmployeeDocumentManageAny = "Document.Manage";
+    public const string EmployeeDocumentUpload = "Document.Upload";
+    public const string EmployeeDocumentGet = "Document.Get";
+    public const string EmployeeDocumentDelete = "Document.Delete";
+    #endregion
 
     #region LeavType
     public const string LeaveTypeManage = "LeaveType.Manage";

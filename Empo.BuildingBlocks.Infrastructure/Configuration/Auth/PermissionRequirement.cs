@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Empo.EmloyeeService.Api.Authorization;
+namespace Empo.BuildingBlocks.Infrastructure.Configuration.Auth;
 
 public class PermissionRequirement : IAuthorizationRequirement
 {

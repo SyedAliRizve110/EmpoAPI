@@ -1,4 +1,4 @@
-﻿using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
+using Empo.BuildingBlocks.Infrastructure.Configuration.UserConfiguration;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -36,8 +36,8 @@ public class UserContextService : IUserContextService
     public Guid? GetEmployeeId()
     {
         var employeeId = _httpContextAccessor.HttpContext?
-    .User
-    .FindFirst("EmployeeId").Value;
+            .User
+            .FindFirst("EmployeeId")?.Value; // null-safe: returns null if claim absent
         if (!Guid.TryParse(employeeId, out var id))
             return null;
 
