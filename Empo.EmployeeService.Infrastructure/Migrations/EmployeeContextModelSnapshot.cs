@@ -209,65 +209,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.ToTable("Designation", "employee");
                 });
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Document.EmployeeDocumentEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DocumentType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("SizeInBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StorageKey")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UploadedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("VerifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("VerifiedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeDocument", "employee");
-                });
-
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Education.EmployeeEducationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -603,6 +544,8 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("LeaveTypeId");
 
                     b.ToTable("EmployeeLeaveBalance", "employee");
@@ -644,6 +587,66 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.HasIndex("BranchId");
 
                     b.ToTable("Holiday", "employee");
+                });
+
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveRequestEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ApprovedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModifieed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LeaveTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("NumberOfDays")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("LeaveRequest", "employee");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", b =>
@@ -689,160 +692,6 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LeaveType", "employee");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostCommentEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PostComment", "employee");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Post", "employee");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostLikeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostLike", "employee");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostMediaEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModifieed")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MediaType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("SizeInBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("StorageKey")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostMedia", "employee");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>
@@ -1342,11 +1191,19 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.EmployeeLeaveBalanceEntity", b =>
                 {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", "LeaveType")
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
                         .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", "LeaveType")
+                        .WithMany("EmployeeLeaveBalances")
                         .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("LeaveType");
                 });
@@ -1360,56 +1217,23 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostCommentEntity", b =>
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveRequestEntity", b =>
                 {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", "User")
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Employee.EmployeeEntity", "Employee")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", b =>
-                {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.User.UserEntity", "User")
+                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", "LeaveType")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
-                });
+                    b.Navigation("Employee");
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostLikeEntity", b =>
-                {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostMediaEntity", b =>
-                {
-                    b.HasOne("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", "Post")
-                        .WithMany("Media")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
+                    b.Navigation("LeaveType");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.RefreshTokenEntity", b =>
@@ -1518,13 +1342,9 @@ namespace Empo.EmployeeService.Infrastructure.Migrations
                     b.Navigation("WorkHistory");
                 });
 
-            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Media.PostEntity", b =>
+            modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.Leave.LeaveTypeEntity", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Media");
+                    b.Navigation("EmployeeLeaveBalances");
                 });
 
             modelBuilder.Entity("Empo.EmployeeService.Infrastructure.Data.Entities.User.PermissionEntity", b =>

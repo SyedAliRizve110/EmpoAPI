@@ -5,11 +5,9 @@ using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
-using Empo.EmployeeService.Infrastructure.Data.Entities.Document;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Leave;
-using Empo.EmployeeService.Infrastructure.Data.Entities.Media;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 using Empo.EmployeeService.Infrastructure.Database;
@@ -36,7 +34,6 @@ public class EmployeeContext : DbContext
     public DbSet<EmployeeBankEntity> EmployeeBank { get; set; }
     public DbSet<EmployeeEducationEntity> Education { get; set; }
     public DbSet<EmployeeWorkHistoryEntity> WorkHistory { get; set; }
-    public DbSet<EmployeeDocumentEntity> EmployeeDocument { get; set; }
 
     #endregion
 
@@ -53,12 +50,6 @@ public class EmployeeContext : DbContext
 
     #endregion
 
-    #region Media
-    public DbSet<PostMediaEntity> PostMedia { get; set; }
-    public DbSet<PostEntity> Post { get; set; }
-    public DbSet<PostLikeEntity> PostLike { get; set; }
-    public DbSet<PostCommentEntity> PostComment { get; set; }
-    #endregion
 
     #region Leave
     public DbSet<LeaveTypeEntity> LeaveType { get; set; }

@@ -14,7 +14,7 @@ namespace Empo.MediaService.Api.Controllers;
 
 [Route("api/post")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class MediaController : Controller
 {
     private readonly IMediator _mediator;
@@ -23,10 +23,12 @@ public class MediaController : Controller
         _mediator = mediator;
     }
 
-    private Guid CurrentUserId =>
-        Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
+    //private Guid CurrentUserId =>
+        //Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
     //private bool IsModerator =>
     //    User.Claims.Any(c => c.Type == "permission" && c.Value == Permissions.PostModerate);
+
+    Guid CurrentUserId = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5");
 
     [Route("")]
     [HttpPost]

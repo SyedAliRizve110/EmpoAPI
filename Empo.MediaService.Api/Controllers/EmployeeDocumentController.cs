@@ -13,7 +13,7 @@ namespace Empo.MediaService.Api.Controllers;
 
 [Route("api/employee/{employeeId}/document")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class EmployeeDocumentController : Controller
 {
     private readonly IMediator _mediator;
@@ -22,7 +22,8 @@ public class EmployeeDocumentController : Controller
         _mediator = mediator;
     }
 
-    private Guid CurrentUserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
+    //private Guid CurrentUserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub")!);
+    Guid CurrentUserId = new Guid("c0138cd8-98c8-44c1-aa79-ac489e57d1b5");
 
     private Guid OwnEmployeeId => Guid.Parse(User.FindFirstValue("EmployeeId")!);
 
@@ -36,9 +37,10 @@ public class EmployeeDocumentController : Controller
     public async Task<IActionResult> Upload([FromRoute] Guid employeeId, [FromForm] UploadEmployeeDocumentRequest request)
     {
         //if (!CanAccessEmployee(employeeId))
-           // throw new ForbiddenException("You can only upload documents for your own employee record.");
+        // throw new ForbiddenException("You can only upload documents for your own employee record.");
 
         var dto = await _mediator.Send(UploadEmployeeDocumentCommand.Create(request, employeeId, CurrentUserId));
+                                                                                                 
         return Ok(dto);
     }
 
