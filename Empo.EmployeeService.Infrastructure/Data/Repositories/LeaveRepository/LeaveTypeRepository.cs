@@ -4,7 +4,7 @@ using Empo.EmployeeService.Application.Models;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Leave;
 using Microsoft.EntityFrameworkCore;
 
-namespace Empo.EmployeeService.Infrastructure.Data.Repositories;
+namespace Empo.EmployeeService.Infrastructure.Data.Repositories.LeaveRepository;
 
 public class LeaveTypeRepository : ILeaveTypeService
 {

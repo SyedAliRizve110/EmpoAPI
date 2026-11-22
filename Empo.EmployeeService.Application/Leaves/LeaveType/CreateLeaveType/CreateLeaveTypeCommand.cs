@@ -1,7 +1,7 @@
 ﻿using Empo.BuildingBlocks.Application.Contracts;
 using Empo.EmployeeService.Application.Models;
 
-namespace Empo.EmployeeService.Application.Leaves.LeaveType.Command;
+namespace Empo.EmployeeService.Application.Leaves.LeaveType.CreateLeaveType;
 
 public class CreateLeaveTypeCommand : CommandBase<LeaveTypeDto>
 {

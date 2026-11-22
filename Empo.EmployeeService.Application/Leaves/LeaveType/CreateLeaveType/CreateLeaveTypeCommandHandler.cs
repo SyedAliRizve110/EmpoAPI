@@ -1,8 +1,7 @@
 ﻿using Empo.BuildingBlocks.Application.Configuration;
-using Empo.EmployeeService.Application.Leaves.LeaveType.Command;
 using Empo.EmployeeService.Application.Models;
 
-namespace Empo.EmployeeService.Application.Leaves.LeaveType.Handler;
+namespace Empo.EmployeeService.Application.Leaves.LeaveType.CreateLeaveType;
 
 public class CreateLeaveTypeCommandHandler : ICommandHandler<CreateLeaveTypeCommand, LeaveTypeDto>
 {

@@ -1,7 +1,9 @@
 ﻿using Empo.EmloyeeService.Api.Authorization;
 using Empo.EmployeeService.Application.Leaves.LeaveType;
-using Empo.EmployeeService.Application.Leaves.LeaveType.Command;
-using Empo.EmployeeService.Application.Leaves.LeaveType.Query;
+using Empo.EmployeeService.Application.Leaves.LeaveType.CreateLeaveType;
+using Empo.EmployeeService.Application.Leaves.LeaveType.GetLeaveType;
+using Empo.EmployeeService.Application.Leaves.LeaveType.ListLeaveType;
+using Empo.EmployeeService.Application.Leaves.LeaveType.UpdateLeaveType;
 using Empo.EmployeeService.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

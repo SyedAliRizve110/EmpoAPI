@@ -1,6 +1,6 @@
 ﻿using Empo.BuildingBlocks.Application.Contracts;
 
-namespace Empo.EmployeeService.Application.Leaves.LeaveType.Query;
+namespace Empo.EmployeeService.Application.Leaves.LeaveType.GetLeaveType;
 
 public class GetLeaveTypeQuery : IQuery<LeaveTypeRequestModel>
 {

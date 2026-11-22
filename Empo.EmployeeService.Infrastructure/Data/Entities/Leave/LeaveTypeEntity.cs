@@ -12,5 +12,4 @@ public class LeaveTypeEntity : EntityBase
     public int MaxCarryForwardDays { get; set; }
     public bool IsActive { get; set; } = true;
     public ICollection<EmployeeLeaveBalanceEntity> EmployeeLeaveBalances { get; set; }
-    = new List<EmployeeLeaveBalanceEntity>();
 }
