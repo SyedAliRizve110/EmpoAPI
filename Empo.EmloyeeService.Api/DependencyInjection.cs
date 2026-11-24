@@ -11,9 +11,12 @@ using Empo.EmployeeService.Application.EmployeeEducation;
 using Empo.EmployeeService.Application.Employees.ServiceInterface;
 using Empo.EmployeeService.Application.EmployeeWorkHistory;
 using Empo.EmployeeService.Application.Interface;
+using Empo.EmployeeService.Application.Leaves.LeaveBalance;
+using Empo.EmployeeService.Application.Leaves.LeaveType;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Repositories;
 using Empo.EmployeeService.Infrastructure.Data.Repositories.AuthRepository;
+using Empo.EmployeeService.Infrastructure.Data.Repositories.LeaveRepository;
 using Empo.EmployeeService.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
 
@@ -47,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped<IEmployeeBankService, EmployeeBankRepository>();
         services.AddScoped<IEmployeeWorkHistoryService, EmployeeWorkHistoryRepository>();
         services.AddScoped<IEmployeeEducationService, EmployeeEducationRepository>();
+        services.AddScoped<ILeaveTypeService, LeaveTypeRepository>();
+        services.AddScoped<ILeaveBalanceService, LeaveBalanceRepository>();
         return services;
     }
 }

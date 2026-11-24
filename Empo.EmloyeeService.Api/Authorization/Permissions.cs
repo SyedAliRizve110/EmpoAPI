@@ -100,4 +100,9 @@ public static class Permissions
     public const string LeaveTypeManage = "LeaveType.Manage";
     public const string LeaveTypeGet = "LeaveType.Get";
     #endregion
+
+    #region LeaveBalance
+    public const string LeaveBalanceGet = "LeaveBalance.Get";
+    public const string LeaveBalanceAdjust = "LeaveBalance.Adjust";
+    #endregion
 }

@@ -26,12 +26,15 @@ using Empo.EmployeeService.Application.Employees.EmployeesModel;
 using Empo.EmployeeService.Application.EmployeeWorkHistory;
 using Empo.EmployeeService.Application.EmployeeWorkHistory.CreateEmployeeWorkHistory;
 using Empo.EmployeeService.Application.EmployeeWorkHistory.UpdateEmployeeWorkHistory;
+using Empo.EmployeeService.Application.Leaves.LeaveBalance;
+using Empo.EmployeeService.Application.Leaves.LeaveType;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Branch;
 using Empo.EmployeeService.Infrastructure.Data.Entities.CommonEntity;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Department;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Designation;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Education;
 using Empo.EmployeeService.Infrastructure.Data.Entities.Employee;
+using Empo.EmployeeService.Infrastructure.Data.Entities.Leave;
 using Empo.EmployeeService.Infrastructure.Data.Entities.User;
 using Empo.EmployeeService.Infrastructure.Data.Entities.WorkHistory;
 
@@ -110,6 +113,22 @@ public class EmployeeMapper : Profile
         #region Education
         CreateMap<CreateEmployeeEducationModel, EmployeeEducationEntity>().ReverseMap();
         CreateMap<EmployeeEducationModel, EmployeeEducationEntity>().ReverseMap();
+        #endregion
+
+        #region Leave
+
+        #region LeaveType
+        CreateMap<LeaveTypeEntity, LeaveTypeRequestModel>().ReverseMap();
+        CreateMap<CreateLeaveTypeRequest, LeaveTypeEntity>().ReverseMap();
+        #endregion
+
+        #region LeaveBalance
+        CreateMap<EmployeeLeaveBalanceEntity, LeaveBalanceModel>()
+            .ForMember(dest => dest.LeaveTypeName, opt => opt.MapFrom(src => src.LeaveType != null ? src.LeaveType.Name : string.Empty))
+            .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee != null ? (src.Employee.FirstName + " " + src.Employee.LastName).Trim() : string.Empty))
+            .ReverseMap();
+        #endregion
+
         #endregion
     }
 }
